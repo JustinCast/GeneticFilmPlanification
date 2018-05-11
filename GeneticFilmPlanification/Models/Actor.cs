@@ -8,5 +8,8 @@ namespace GeneticFilmPlanification.Models
 {
     class Actor
     {
+        int CostPerDay { get; set; }
+        int FirstParticipation { get; set; }
+        int LastParticipation { get; set; }
     }
 }

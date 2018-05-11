@@ -8,5 +8,6 @@ namespace GeneticFilmPlanification.Models
 {
     class WorkingDay
     {
+        int MaximunScriptPages { get; set; }
     }
 }

@@ -8,5 +8,8 @@ namespace GeneticFilmPlanification.Models
 {
     class Scene
     {
+        int Duration { get; set; }
+        List<Actor> Actors { get; set; }
+
     }
 }
