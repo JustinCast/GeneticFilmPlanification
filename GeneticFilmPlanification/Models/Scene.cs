@@ -10,6 +10,6 @@ namespace GeneticFilmPlanification.Models
     {
         int Duration { get; set; }
         List<Actor> Actors { get; set; }
-
+        List<Location> SceneLocations { get; set; }
     }
 }

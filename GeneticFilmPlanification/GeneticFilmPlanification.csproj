@@ -42,6 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Actor.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Scene.cs" />
+    <Compile Include="Models\WorkingDay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
