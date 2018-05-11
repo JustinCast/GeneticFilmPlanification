@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneticFilmPlanification.Models.AuxiliarModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace GeneticFilmPlanification.Models
         int Duration { get; set; }
         List<Actor> Actors { get; set; }
         List<Location> SceneLocations { get; set; }
+        Schedule SceneSchedule { get; set; }
     }
 }

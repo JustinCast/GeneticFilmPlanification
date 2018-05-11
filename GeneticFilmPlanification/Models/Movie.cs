@@ -12,5 +12,6 @@ namespace GeneticFilmPlanification.Models
         List<Actor> AllActors { get; set; }
         List<Location> MovieLocations { get; set; }
         List<WorkingDay> AvailableWorkingDays { get; set; }
+        int MovieDuration { get; set; }
     }
 }
