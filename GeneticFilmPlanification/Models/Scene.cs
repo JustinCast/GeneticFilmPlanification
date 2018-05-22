@@ -9,6 +9,7 @@ namespace GeneticFilmPlanification.Models
 {
     class Scene
     {
+        // se calcula en base a las páginas que la escena ocupa en el guión
         int Duration { get; set; }
         List<Actor> Actors { get; set; }
         List<Location> SceneLocations { get; set; }

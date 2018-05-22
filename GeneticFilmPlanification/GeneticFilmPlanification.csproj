@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Actor.cs" />
+    <Compile Include="Models\AuxiliarModels\Schedule.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Scene.cs" />
