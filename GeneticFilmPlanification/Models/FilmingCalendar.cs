@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace GeneticFilmPlanification.Models
 {
-    class Movie
+    class FilmingCalendar
     {
-        List<Actor> Actors { get; set; }   
-        List<Location> Locations { get; set; }
-        List<FilmingCalendar> FilmingCalendars { get; set; }
+        List<Scene> Scenes { get; set; }
+        int Cost { get; set; }
     }
 }
-
