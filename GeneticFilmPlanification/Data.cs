@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneticFilmPlanification.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,18 @@ namespace GeneticFilmPlanification
 {
     class Data
     {
+        List<Actor> Actors = new List<Actor>();
+
+        public static void createActors(int numberOfActors) {
+            for (int i=0; i<=numberOfActors;i++) {
+                Actor newActor = new Actor();
+                newActor.
+                
+                
+
+            }
+
+
+        }
     }
 }

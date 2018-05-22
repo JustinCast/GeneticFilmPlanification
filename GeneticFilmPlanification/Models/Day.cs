@@ -8,8 +8,8 @@ namespace GeneticFilmPlanification.Models
 {
     class Day
     {
-        Time DayTime { get; set; }
-        Time NightTime { get; set; }
-        int DayNumber { get; set; }
+        public Time DayTime { get; set; }
+        public Time NightTime { get; set; }
+        public int DayNumber { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace GeneticFilmPlanification.Models
 {
     class FilmingCalendar
     {
-        List<Scene> Scenes { get; set; }
-        int Cost { get; set; }
+        public List<Scene> Scenes { get; set; }
+        public int Cost { get; set; }
     }
 }

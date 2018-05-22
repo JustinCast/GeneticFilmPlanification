@@ -8,9 +8,9 @@ namespace GeneticFilmPlanification.Models
 {
     class Movie
     {
-        List<Actor> Actors { get; set; }   
-        List<Location> Locations { get; set; }
-        List<FilmingCalendar> FilmingCalendars { get; set; }
+        public List<Actor> Actors { get; set; }   
+        public List<Location> Locations { get; set; }
+        public List<FilmingCalendar> FilmingCalendars { get; set; }
     }
 }
 

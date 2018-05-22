@@ -8,8 +8,8 @@ namespace GeneticFilmPlanification.Models
 {
     class Time  
     {
-        int MaximunScriptPages { get; set; }
-        List<Scene> Scenes { get; set; }
-        List<Location> AvailableLocations { get; set; }
+        public int MaximunScriptPages { get; set; }
+        public List<Scene> Scenes { get; set; }
+        public List<Location> AvailableLocations { get; set; }
     }
 }
