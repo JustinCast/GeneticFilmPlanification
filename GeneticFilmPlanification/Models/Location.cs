@@ -8,5 +8,7 @@ namespace GeneticFilmPlanification.Models
 {
     class Location
     {
+        String ID{ get; set; }
+        bool InUse { get; set; }
     }
 }

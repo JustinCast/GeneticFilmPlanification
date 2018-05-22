@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace GeneticFilmPlanification.Models
 {
-    class Movie
+    class Day
     {
-        List<Actor> Actors { get; set; }   
-        List<Location> Locations { get; set; }
+        Time DayTime { get; set; }
+        Time NightTime { get; set; }
+        int DayNumber { get; set; }
     }
 }

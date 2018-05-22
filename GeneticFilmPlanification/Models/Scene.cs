@@ -1,5 +1,4 @@
-﻿using GeneticFilmPlanification.Models.AuxiliarModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +10,9 @@ namespace GeneticFilmPlanification.Models
     {
         // se calcula en base a las páginas que la escena ocupa en el guión
         int Duration { get; set; }
-        List<Actor> Actors { get; set; }
-        List<Location> SceneLocations { get; set; }
-        Schedule SceneSchedule { get; set; }
+        int Pages { get; set; }
+        List<String> ActorsID { get; set; }
+        Location Location { get; set; }
+        bool Schedule { get; set; } // true = dia, false = noche
     }
 }

@@ -11,5 +11,6 @@ namespace GeneticFilmPlanification.Models
         int CostPerDay { get; set; }
         int FirstParticipation { get; set; }
         int LastParticipation { get; set; }
+        String ID { get; set; }
     }
 }
