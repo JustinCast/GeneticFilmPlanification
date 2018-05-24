@@ -21,7 +21,7 @@ namespace GeneticFilmPlanification.Models
             this.Cost = 0;
             foreach(Scene s in Scenes)
             {
-                Cost += s.Act
+                Cost += 
             }
             return 0;
         }

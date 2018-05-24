@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BranchAndBound.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Models\Actor.cs" />
     <Compile Include="Models\Day.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Models\Scene.cs" />
     <Compile Include="Models\Time.cs" />
     <Compile Include="Pmx.cs" />
+    <Compile Include="ProblemSolver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
