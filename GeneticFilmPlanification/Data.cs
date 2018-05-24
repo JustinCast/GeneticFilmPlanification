@@ -34,21 +34,37 @@ namespace GeneticFilmPlanification
                 Locations.Add(newLocation);
             }
         }
-        public static void createScenes(int numberOfScenes,FilmingCalendar calendar) {
+
+        public static void createScenes(int numberOfScenes,FilmingCalendar calendar, int actorsPerScene) {
             int pages = 5;
+            Boolean flag = true;
             for (int i = 0; i <= numberOfScenes; i++) {
                 Scene newScene = new Scene();
                 newScene.Pages = pages+1;
                 newScene.Duration = pages * 5;// cada pagina tiene un valor de 5 minutos
-                
+                pages++;
+                for (int j=0;j<=actorsPerScene;j++) {
+                    newScene.ActorsID.Add(Actors[j*2].ID);
+                }
+                newScene.Location = Locations[actorsPerScene*3];
                 calendar.Scenes.Add(newScene);
+                if (flag==true) {
+                    newScene.Schedule = flag;
+                    flag = false;
+                }
+                else {
+                    newScene.Schedule = flag;
+                    flag = true;
+                }
             }
         }
 
-        public static void createScenario(int numberOfLocation, int numberOfActors, int numberOfScenes, FilmingCalendar calendar) {
+        public static void createScenario(int numberOfLocation, int numberOfActors, int numberOfScenes, FilmingCalendar calendar,
+        int actorsPerScene)
+        {
             createLocation(numberOfLocation);
             createActors(numberOfActors);
-            createScenes(numberOfScenes,calendar);
+            createScenes(numberOfScenes,calendar,actorsPerScene);
         }
     }
 }
