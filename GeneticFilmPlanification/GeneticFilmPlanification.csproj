@@ -48,6 +48,7 @@
     <Compile Include="Models\FilmingCalendar.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Scenario.cs" />
     <Compile Include="Models\Scene.cs" />
     <Compile Include="Models\Time.cs" />
     <Compile Include="Pmx.cs" />

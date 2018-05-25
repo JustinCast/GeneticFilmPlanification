@@ -11,11 +11,14 @@ namespace GeneticFilmPlanification
     {
         static void Main(string[] args)
         {
-            Data.createScenario1(5,40,0);// location ,actors, positionCalendar 
-            Data.createScenario2(6, 60, 1);// location ,actors, positionCalendar
-            Data.createScenario3(7, 100, 2);// location ,actors, positionCalendar
-            Data.createScenario4(8, 80, 3);// location ,actors, positionCalendar
-            Data.printScenarios();
+            Movie movie = new Movie();
+            Data.createScenariosOfMovie(movie);
+
+            Data.createScenario1(5,40, movie,0);// location ,actors, pelicula, posicion del escenario
+            Data.createScenario2(6, 60, movie,1);// location ,actors, pelicula, posicion del escenario
+            Data.createScenario3(7, 100, movie,2);// location ,actors, pelicula, posicion del escenario
+            Data.createScenario4(8, 80, movie,3);// location ,actors, pelicula, posicion del escenario
+            Data.printScenarios(movie);
             Console.ReadKey();
         }
     }
