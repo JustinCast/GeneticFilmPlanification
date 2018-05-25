@@ -19,6 +19,8 @@ namespace GeneticFilmPlanification
             Data.createScenario3(7, 100, movie,2);// location ,actors, pelicula, posicion del escenario
             Data.createScenario4(8, 80, movie,3);// location ,actors, pelicula, posicion del escenario
             Data.printScenarios(movie);
+
+            Data.createDays(movie);
             Console.ReadKey();
         }
     }

@@ -9,6 +9,59 @@ namespace GeneticFilmPlanification
 {
     class Data
     {
+        public static void createDays(Movie movie)
+        {// crea los dias ademas de agregar los objetos de jornada dia y jornada noche con un maximo de paginas de 35
+            foreach(Scenario scenario in movie.Scenarios) {
+                for (int i = 1; i <= 40; i++)
+                {
+                    Day newDay = new Day();
+                    newDay.DayNumber = i;
+                    Time time1 = new Time();
+                    time1.MaximunScriptPages = 35;
+                    Time time2 = new Time();
+                    time2.MaximunScriptPages = 35;
+                    newDay.DayTime = time1;
+                    newDay.NightTime = time2;
+                    scenario.Days.Add(newDay);
+                }
+            }  
+        }
+
+        public static void printDay(Movie movie) {
+            int numberScenario = 1;
+            for (int i=0; i< movie.Scenarios.Count;i++) {
+                foreach (Day day in movie.Scenarios[i].Days)    
+                {
+                    Console.WriteLine("Scenario number " + numberScenario);
+                    numberScenario += 1;
+                    Console.WriteLine("-----------------------------------Day number "+day.DayNumber+" --------------------------");
+                    Console.WriteLine("Day time...");
+                    Console.WriteLine("Avalable Locations...");
+                    foreach (Location time in day.DayTime.AvailableLocations) {
+
+                    }
+                    Console.WriteLine(" Scenes...");
+                    foreach (Scene time in day.DayTime.Scenes)
+                    {
+
+                    }
+                    Console.WriteLine("Nigth time...");
+                    Console.WriteLine("Avalable Locations...");
+                    foreach (Location time in day.DayTime.AvailableLocations)
+                    {
+
+                    }
+                    Console.WriteLine(" Scenes...");
+                    foreach (Scene time in day.DayTime.Scenes)
+                    {
+
+                    }
+                }
+            }
+            
+
+
+        }
 
         public static void createScenariosOfMovie(Movie movie) {
             for (int i=0; i<4;i++) {
