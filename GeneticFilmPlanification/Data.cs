@@ -12,20 +12,52 @@ namespace GeneticFilmPlanification
         public static void createDays(Movie movie)
         {// crea los dias ademas de agregar los objetos de jornada dia y jornada noche con un maximo de paginas de 35
             foreach(Scenario scenario in movie.Scenarios) {
-                for (int i = 1; i <= 40; i++)
+                int quantity = 0;
+                int position = movie.Scenarios.IndexOf(scenario);
+                if (position == 0)
+                    quantity = 10;
+                if (position==1)
+                    quantity = 15;
+                if (position == 2)
+                    quantity = 17;
+                if (position == 3)
+                    quantity = 20;
+                for (int i = 1; i <= quantity; i++)
                 {
                     Day newDay = new Day();
                     newDay.DayNumber = i;
                     Time time1 = new Time();
-                    time1.MaximunScriptPages = 35;
+                    time1.MaximunScriptPages = 45;
                     Time time2 = new Time();
-                    time2.MaximunScriptPages = 35;
+                    time2.MaximunScriptPages = 45;
                     newDay.DayTime = time1;
                     newDay.NightTime = time2;
                     scenario.Days.Add(newDay);
                 }
             }  
         }
+
+        public static void assignScenesToDay(Movie movie,int positionScenario) {// Este metodo recorre los dias y le asigna una escena ya sea de dia o de noche 
+            foreach (Day day in movie.Scenarios[positionScenario].Days) {
+                foreach (Scene scene in movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes)
+                {
+                    if (scene.assigned == false) {
+                        if (scene.Schedule == true)
+                        {
+                            scene.assigned = true;
+                            day.DayTime.Scenes.Add(scene);
+                            break;
+                        }
+                        if (scene.Schedule == false)
+                        {
+                            scene.assigned = true;
+                            day.NightTime.Scenes.Add(scene);
+                            break;
+                        }
+                    }
+                }
+            }
+        } 
 
         public static void printDay(Movie movie) {
             int numberScenario = 1;

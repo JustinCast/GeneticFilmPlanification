@@ -21,6 +21,12 @@ namespace GeneticFilmPlanification
             Data.printScenarios(movie);
 
             Data.createDays(movie);
+
+            Data.assignScenesToDay(movie,0);// pelicula, posicion del escenario
+            Data.assignScenesToDay(movie,1);
+            Data.assignScenesToDay(movie,2);
+            Data.assignScenesToDay(movie,3);
+
             Console.ReadKey();
         }
     }
