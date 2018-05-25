@@ -27,6 +27,8 @@ namespace GeneticFilmPlanification
             Data.assignScenesToDay(movie,2);
             Data.assignScenesToDay(movie,3);
 
+            Data.assignLocationsToDay(movie);
+
             Console.ReadKey();
         }
     }

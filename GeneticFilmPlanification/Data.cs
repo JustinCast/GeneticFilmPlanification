@@ -9,6 +9,39 @@ namespace GeneticFilmPlanification
 {
     class Data
     {
+        public static void assignLocationsToDay(Movie movie) {// Por cada escenario recorre la lista de las localizaciones y las va agregando a la lista de disponibles marcando cuales estan en uso y cuales no en la jornada ya sea dia o noche 
+            for (int i=0; i<= movie.Scenarios.Count;i++) {
+                foreach (Day day in movie.Scenarios[i].Days) {
+                    foreach (Location location in movie.Scenarios[i].Locations ) {
+                        if (day.DayTime.Scenes.Count > 0)
+                        {
+                            foreach (Scene scene in day.DayTime.Scenes)
+                            {
+                                Location auxLocation = location;
+                                if (auxLocation.ID==scene.Location.ID) {
+                                    auxLocation.InUse = true;
+                                    day.DayTime.AvailableLocations.Add(auxLocation);
+                                }
+                                day.DayTime.AvailableLocations.Add(location);  
+                            }
+                        }
+                        if(day.NightTime.Scenes.Count > 0) {
+                            foreach (Scene scene in day.NightTime.Scenes)
+                            {
+                                Location auxLocation = location;
+                                if (auxLocation.ID == scene.Location.ID)
+                                {
+                                    auxLocation.InUse = true;
+                                    day.NightTime.AvailableLocations.Add(auxLocation);
+                                }
+                                day.NightTime.AvailableLocations.Add(location);
+                            }
+                        }    
+                    }
+                }
+            }
+        }
+
         public static void createDays(Movie movie)
         {// crea los dias ademas de agregar los objetos de jornada dia y jornada noche con un maximo de paginas de 35
             foreach(Scenario scenario in movie.Scenarios) {
@@ -59,7 +92,7 @@ namespace GeneticFilmPlanification
             }
         } 
 
-        public static void printDay(Movie movie) {
+        public static void printDays(Movie movie) {
             int numberScenario = 1;
             for (int i=0; i< movie.Scenarios.Count;i++) {
                 foreach (Day day in movie.Scenarios[i].Days)    
@@ -581,13 +614,6 @@ namespace GeneticFilmPlanification
             assignActorToScene("2", 16, movie, positionScenario);
             assignActorToScene("1", 16, movie, positionScenario);
         }
-
-        public static void firstAndLastDaysActors() {// Este metodo calcula cual es el primero y el ultimo dia de participación de un actor 
-
-
-        }
-
-       
 
         public static void printScenarios(Movie movie) {
             Console.WriteLine("Numero de scenarios " + movie.Scenarios.Count + "\n");
