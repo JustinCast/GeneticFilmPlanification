@@ -10,7 +10,7 @@ namespace GeneticFilmPlanification
     class Data
     {
         public static void assignLocationsToDay(Movie movie) {// Por cada escenario recorre la lista de las localizaciones y las va agregando a la lista de disponibles marcando cuales estan en uso y cuales no en la jornada ya sea dia o noche 
-            for (int i=0; i<= movie.Scenarios.Count;i++) {
+            for (int i=0; i< movie.Scenarios.Count;i++) {
                 foreach (Day day in movie.Scenarios[i].Days) {
                     foreach (Location location in movie.Scenarios[i].Locations ) {
                         if (day.DayTime.Scenes.Count > 0)
