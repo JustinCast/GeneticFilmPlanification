@@ -18,6 +18,25 @@ namespace GeneticFilmPlanification
             return newCalendar;
         }
 
+        public static FilmingCalendar changeScenes(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar)
+        {
+            for (int k = 0; k < fatherCalendar.Scenes.Count; k++)
+            {// recorre las escenas del padre 2 con el fin de asignarla a una escena del desentiente 1 que se encuentre en null 
+                for (int n = 0; n < sonCalendar.Scenes.Count; n++)
+                {// recorre las escenas del desenciente hasta encontrar una en null
+                    if (sonCalendar.Scenes[0] == null)
+                    {
+                        bool exists = sonCalendar.Scenes.Contains(fatherCalendar.Scenes[k]);// verifica si existe la escena del padre en el hijo
+                        if (exists == false)
+                        {
+                            sonCalendar.Scenes[n] = fatherCalendar.Scenes[k];// se le asigna a la escena que estaba en null la escena que no se encuentra en ese calendario aún
+                        }
+                    }
+                }
+            }
+            return sonCalendar;
+        }
+
         public static void performCrossingPMX(FilmingCalendar calendar,Movie movie, int positionScenario) {// se realiza el cruce entre los dos calendarios para obtener otro mediante un cruce
             FilmingCalendar chromosome1;                                    // Recalcar este metodo crea dos descendientes a la vez
             FilmingCalendar chromosome2;
@@ -51,24 +70,6 @@ namespace GeneticFilmPlanification
                 chromosome1 = newDesendent1;
                 chromosome2 = newDesendent2;
             }
-        }
-
-        public static FilmingCalendar changeScenes(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar) {
-            for (int k = 0; k < fatherCalendar.Scenes.Count; k++)
-            {// recorre las escenas del padre 2 con el fin de asignarla a una escena del desentiente 1 que se encuentre en null 
-                for (int n = 0; n < sonCalendar.Scenes.Count; n++)
-                {// recorre las escenas del desenciente hasta encontrar una en null
-                    if (sonCalendar.Scenes[0] == null)
-                    {
-                        bool exists = sonCalendar.Scenes.Contains(fatherCalendar.Scenes[k]);// verifica si existe la escena del padre en el hijo
-                        if (exists == false)
-                        {
-                            sonCalendar.Scenes[n] = fatherCalendar.Scenes[k];// se le asigna a la escena que estaba en null la escena que no se encuentra en ese calendario aún
-                        }
-                    }
-                }
-            }
-            return sonCalendar;
         }
 
         public FilmingCalendar chooseTheBestCalendar(Movie movie, int positionScenario) {
