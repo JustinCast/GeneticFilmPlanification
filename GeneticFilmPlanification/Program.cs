@@ -29,6 +29,9 @@ namespace GeneticFilmPlanification
 
             Data.assignLocationsToDay(movie);
 
+            Pmx.generateChromosome(movie.Scenarios[0].FilmingCalendars[0]);
+
+            Console.WriteLine("listo");
             Console.ReadKey();
         }
     }
