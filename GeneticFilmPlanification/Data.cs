@@ -638,5 +638,19 @@ namespace GeneticFilmPlanification
                     Console.WriteLine("\n\n\n");
             }  
         }
+
+        public static int calculatePriceOfCalendar(Movie movie,int positionScenario,FilmingCalendar calendar) {// calcula el precio total del calendario
+
+            int totalPrice = 0;
+            List<Actor> actors = movie.Scenarios[positionScenario].Actors;
+            foreach (Actor actor in actors) {
+                for (int i=actor.FirstParticipation;i<=actor.LastParticipation;i++) {
+                    totalPrice += actor.CostPerDay;
+                }
+            }
+            return totalPrice;
+        } 
+
+
     }
 }
