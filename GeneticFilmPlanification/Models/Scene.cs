@@ -11,8 +11,9 @@ namespace GeneticFilmPlanification.Models
         // se calcula en base a las páginas que la escena ocupa en el guión
         public int Duration { get; set; }
         public int Pages { get; set; }
-        public List<String> ActorsID = new List<String>(); 
+        public List<Actor> Actors = new List<Actor>(); 
         public Location Location { get; set; }
         public bool Schedule { get; set; } // true = dia, false = noche
+        public bool assigned = false;
     }
 }
