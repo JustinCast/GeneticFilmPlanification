@@ -11,7 +11,7 @@ namespace GeneticFilmPlanification.Models
         public List<FilmingCalendar> FilmingCalendars = new List<FilmingCalendar>();
 
         public List<Actor> Actors = new List<Actor>();
-        public List<Location> Locations = new List<Location>();
+        public List<Location> Locations = new List<Location>(); 
         public List<Day> Days = new List<Day>();
     }
 }

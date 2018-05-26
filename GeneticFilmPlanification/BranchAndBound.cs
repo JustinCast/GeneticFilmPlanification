@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneticFilmPlanification.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,8 @@ namespace GeneticFilmPlanification
 {
     class BranchAndBound
     {
+        FilmingCalendar TmpBestSolution;
+
+
     }
 }
