@@ -13,6 +13,11 @@ namespace GeneticFilmPlanification
     {
         private List<FilmingCalendar> FilmingCalendars = new List<FilmingCalendar>();
         private FilmingCalendar BSSF;
+        /// <summary>
+        /// en esta lista se guarda el orden de la combinacion
+        /// Cuando la recursividad retorne, se podrá calcular el costo de esa combinacion
+        /// </summary>
+        private List<Scene> Combination = new List<Scene>();
         int count = 0;
         public BranchAndBound(List<Scenario> scenarios)
         {
@@ -38,33 +43,42 @@ namespace GeneticFilmPlanification
         public void RunBB()
         {
             for (int i = 0; i < this.FilmingCalendars.Count; i++)
+            {
+                // clona la lista
+                this.Combination = this.ShallowClone(this.FilmingCalendars.ElementAt(i).Scenes);
                 MakeCombination(this.FilmingCalendars.ElementAt(i).Scenes);
+            }
         }
         
 
         private void MakeCombination(List<Scene> scenes)
-        {
-            Console.WriteLine("Combination");
+        {            
             if (scenes.Count == 0) {
-                Console.WriteLine("RECURSION COMPLETE");
+                if (CombinationCost(Combination) < BSSF.Cost)
+                    MakeNewBSSF(Combination);
+                // limpia la lista para que guarde una nueva combinacion
+                this.Combination.Clear();
                 return;
             }
             foreach(Scene s in scenes)
             {
-                if (FilmingCalendar.CalendarCost(scenes) > BSSF.Cost)
-                { // si el costo es mayor retorna la rec
-                    Console.WriteLine("Costo de las combinaciones: " + CombinationCost(scenes));
-                    Console.WriteLine("Costo de la mejor solucion: " + this.BSSF.Cost);
+                /*
+                 * Si el costo actual de la combinacion es mayor al costo de la
+                 * solución actual, no tiene sentido seguir combinando
+                 * IMPLEMENTACION LC-FIFO
+                 * **/
+                if (CombinationCost(Combination) > BSSF.Cost)
                     return;
+                else
+                {
+                    // se quita la escena del inicio y se agrega al final
+                    this.Combination.Remove(s); this.Combination.Add(s);
+                    List<Scene> aux = ShallowClone(scenes);
+                    aux.Remove(s);
+                    PrintCombination(this.Combination);
+                    MakeCombination(aux);
                 }
-                MakeNewBSSF(scenes);
-                List<Scene> aux = ShallowClone(scenes);
-                aux.Remove(s);
-                Console.WriteLine("LLAMADA # "+ count);
-                count++;
-                MakeCombination(aux);
             }
-
         }
 
         // Return a shallow clone of a list.
@@ -85,9 +99,18 @@ namespace GeneticFilmPlanification
 
         private int CombinationCost(List<Scene> scenes)
         {
-            return FilmingCalendar.CalendarCost(scenes);
+            int cost = FilmingCalendar.CalendarCost(scenes);
+            Console.WriteLine("COSTO COMBINACION: " + cost);
+            return cost;
         }
 
-
+        private void PrintCombination(List<Scene> scences)
+        {
+            Console.WriteLine("######### COMBINACIÓN #########");
+            String c = "";
+            foreach (Scene s in scences)
+                c += s.Location.ID + "-";
+            Console.WriteLine(c);
+        }
     }
 }
