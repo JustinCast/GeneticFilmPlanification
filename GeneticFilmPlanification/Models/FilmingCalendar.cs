@@ -11,19 +11,26 @@ namespace GeneticFilmPlanification.Models
         public List<Scene> Scenes = new List<Scene>();
         public int Cost { get; set; }
 
+        FilmingCalendar() { }
+
+        FilmingCalendar(List<Scene> scenes, int cost)
+        {
+            this.Scenes = scenes;
+            this.Cost = cost;
+        }
+
 
         /// <summary>
         /// Calcula el costo total del calendario
         /// </summary>
         /// <returns>Costo total del calendario</returns>
-        public int CalendarCost()
+        public static int CalendarCost(List<Scene> scenes)
         {
-            this.Cost = 0;
-            foreach(Scene s in Scenes)
-            {
-                //Cost += 
-            }
-            return 0;
+            int cost = 0;
+            foreach(Scene s in scenes)
+                foreach (Actor a in s.Actors)
+                    cost += a.CostPerDay;
+            return cost;
         }
     }
 }

@@ -52,7 +52,8 @@ namespace GeneticFilmPlanification
         /// <param name="scenes"></param>
         private void MakeNewBSSF(List<Scene> scenes)
         {
-
+            this.BSSF.Scenes = scenes;
+            this.BSSF.Cost = FilmingCalendar.CalendarCost(scenes);
         }
 
         private int CombinationCost(List<Scene> scenes)
