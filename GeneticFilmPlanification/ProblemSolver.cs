@@ -9,19 +9,6 @@ namespace GeneticFilmPlanification
 {
     class ProblemSolver
     {
-        private class MovieOptimizationSolution
-        {
-            public List<FilmingCalendar> Calendars;
-
-            MovieOptimizationSolution(List<FilmingCalendar> calendars)
-            {
-                this.Calendars = calendars;
-            }
-            
-            public double CalendarCost()
-            {
-                return 0.0;
-            }
-        }
+        
     }
 }

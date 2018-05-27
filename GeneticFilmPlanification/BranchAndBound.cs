@@ -1,7 +1,9 @@
 ﻿using GeneticFilmPlanification.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,7 +12,8 @@ namespace GeneticFilmPlanification
     class BranchAndBound
     {
         private List<FilmingCalendar> FilmingCalendars = new List<FilmingCalendar>();
-        private FilmingCalendar BSSF = 
+        private FilmingCalendar BSSF;
+        int count = 0;
         public BranchAndBound(List<Scenario> scenarios)
         {
             this.InitData(scenarios);
@@ -25,27 +28,51 @@ namespace GeneticFilmPlanification
             // la siguiente línea setea por defecto el primer calendario
             // como mejor solución
             this.BSSF = scenarios.ElementAt(0).FilmingCalendars.ElementAt(0);
-            foreach(Scenario s in scenarios)
+            this.BSSF.Cost = FilmingCalendar.CalendarCost(BSSF.Scenes);
+            foreach (Scenario s in scenarios)
             {
-                this.FilmingCalendars.Add(s.FilmingCalendars.ElementAt(0))
-;           }
+                this.FilmingCalendars.Add(s.FilmingCalendars.ElementAt(0));
+            }
         }
+
+        public void RunBB()
+        {
+            for (int i = 0; i < this.FilmingCalendars.Count; i++)
+                MakeCombination(this.FilmingCalendars.ElementAt(i).Scenes);
+        }
+        
 
         private void MakeCombination(List<Scene> scenes)
         {
-            if (scenes.Count == 0)
+            Console.WriteLine("Combination");
+            if (scenes.Count == 0) {
+                Console.WriteLine("RECURSION COMPLETE");
                 return;
+            }
             foreach(Scene s in scenes)
             {
-                if (CombinationCost(scenes) > BSSF.Cost) // si el costo es mayor retorna la rec
+                if (FilmingCalendar.CalendarCost(scenes) > BSSF.Cost)
+                { // si el costo es mayor retorna la rec
+                    Console.WriteLine("Costo de las combinaciones: " + CombinationCost(scenes));
+                    Console.WriteLine("Costo de la mejor solucion: " + this.BSSF.Cost);
                     return;
+                }
                 MakeNewBSSF(scenes);
-                List<Scene> aux = scenes;
+                List<Scene> aux = ShallowClone(scenes);
                 aux.Remove(s);
+                Console.WriteLine("LLAMADA # "+ count);
+                count++;
                 MakeCombination(aux);
             }
 
         }
+
+        // Return a shallow clone of a list.
+        private List<T> ShallowClone<T>(List<T> items)
+        {
+            return new List<T>(items);
+        }
+
         /// <summary>
         /// Creará una nueva mejor solución (calendario)
         /// </summary>
@@ -58,7 +85,7 @@ namespace GeneticFilmPlanification
 
         private int CombinationCost(List<Scene> scenes)
         {
-            return 0;
+            return FilmingCalendar.CalendarCost(scenes);
         }
 
 

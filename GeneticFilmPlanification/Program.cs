@@ -33,6 +33,9 @@ namespace GeneticFilmPlanification
             Pmx.generateChromosome(movie.Scenarios[0].FilmingCalendars[0]);
 
             Console.WriteLine("listo");
+            Console.WriteLine("################################### BRANCH AND BOUND METHOD ###################################");
+            BranchAndBound B = new BranchAndBound(movie.Scenarios);
+            B.RunBB();
             Console.ReadKey();
         }
     }

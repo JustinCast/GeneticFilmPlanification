@@ -11,9 +11,9 @@ namespace GeneticFilmPlanification.Models
         public List<Scene> Scenes = new List<Scene>();
         public int Cost { get; set; }
 
-        FilmingCalendar() { }
+        public FilmingCalendar() { }
 
-        FilmingCalendar(List<Scene> scenes, int cost)
+        public FilmingCalendar(List<Scene> scenes, int cost)
         {
             this.Scenes = scenes;
             this.Cost = cost;
