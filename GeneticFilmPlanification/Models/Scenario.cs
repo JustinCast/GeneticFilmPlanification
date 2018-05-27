@@ -9,6 +9,7 @@ namespace GeneticFilmPlanification.Models
     class Scenario
     {
         public List<FilmingCalendar> FilmingCalendars = new List<FilmingCalendar>();
+        public List<FilmingCalendar> BestSolutionsB_B = new List<FilmingCalendar>();
 
         public List<Actor> Actors = new List<Actor>();
         public List<Location> Locations = new List<Location>(); 
