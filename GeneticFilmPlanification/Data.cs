@@ -631,8 +631,7 @@ namespace GeneticFilmPlanification
                         Console.WriteLine("---------------------------------------Actors-----------------------------------------");
                         foreach (Actor actor in scene.Actors)
                         {
-                            Console.WriteLine("Id actor: " + actor.ID + "    Coste per day: " + actor.CostPerDay + "    First participation: " + actor.FirstParticipation +
-                            "    Last participation: " + actor.LastParticipation + "\n");
+                            Console.WriteLine("Id actor: " + actor.ID + "    Coste per day: " + actor.CostPerDay+ "\n");
                         }
                     }
                     Console.WriteLine("\n\n\n");
@@ -640,17 +639,65 @@ namespace GeneticFilmPlanification
         }
 
         public static int calculatePriceOfCalendar(Movie movie,int positionScenario,FilmingCalendar calendar) {// calcula el precio total del calendario
-
             int totalPrice = 0;
             List<Actor> actors = movie.Scenarios[positionScenario].Actors;
-            foreach (Actor actor in actors) {
-                for (int i=actor.FirstParticipation;i<=actor.LastParticipation;i++) {
+            int firstParticipation = 0;
+            int lastParticipation = 0;
+            foreach (Actor actor in actors)
+            {
+                foreach (Day day in movie.Scenarios[positionScenario].Days)
+                {
+                    if (day.DayTime.Scenes.Count != 0)// recocrre las escenas de dia unicamente 
+                    {
+                        foreach (Scene scene in day.DayTime.Scenes)
+                        {
+                            foreach (Actor auxActor in scene.Actors)
+                            {
+                                if (auxActor.ID.Equals(actor.ID) && firstParticipation==0) {
+                                    firstParticipation = day.DayNumber;
+                                    break;
+                                }
+                                if (auxActor.ID.Equals(actor.ID))
+                                {
+                                    lastParticipation = day.DayNumber;
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    if (day.NightTime.Scenes.Count != 0)// recorre las escenas de noche unicamente 
+                    {
+                        foreach (Scene scene in day.NightTime.Scenes)
+                        {
+                            foreach (Actor auxActor in scene.Actors)
+                            {
+                                if (auxActor.ID.Equals(actor.ID) && firstParticipation == 0)
+                                {
+                                    firstParticipation = day.DayNumber;
+                                    break;
+                                }
+                                if (auxActor.ID.Equals(actor.ID))
+                                {
+                                    lastParticipation = day.DayNumber;
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                for (int i = firstParticipation; i <= lastParticipation; i++)// suma el precio del actor desde el primer hasta el ultimo dia                                                             
+                    totalPrice += actor.CostPerDay;                          // que aparece en el calendario  y se lo suma al coste total del calendario 
+                if (firstParticipation!=0 && lastParticipation==0) {
                     totalPrice += actor.CostPerDay;
                 }
+                Console.WriteLine("\n");
+                Console.WriteLine("Actor: "+ actor.ID+" First participation: day"+firstParticipation+"  last participation: day"+lastParticipation+"  CostPerDay: "+actor.CostPerDay);
+                firstParticipation = 0;
+                lastParticipation = 0;
             }
             return totalPrice;
         } 
-
-
     }
 }
