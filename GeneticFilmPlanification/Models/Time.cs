@@ -11,5 +11,6 @@ namespace GeneticFilmPlanification.Models
         public int MaximunScriptPages { get; set; }
         public List<Scene> Scenes = new List<Scene>();
         public List<Location> AvailableLocations = new List<Location>();
+        public String TimeName { get; set; }
     }
 }
