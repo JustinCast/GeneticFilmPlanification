@@ -13,13 +13,14 @@ namespace GeneticFilmPlanification
     {
         private List<FilmingCalendar> FilmingCalendars = new List<FilmingCalendar>();
         private FilmingCalendar BSSF;
+        private int CurrentFilmingCalendarID = 0;
         /// <summary>
         /// en esta lista se guarda el orden de la combinacion
         /// Cuando la recursividad retorne, se podrá calcular el costo de esa combinacion
         /// </summary>
         private List<Scene> Combination = new List<Scene>();
         int count = 0;
-        public BranchAndBound(List<Scenario> scenarios)
+        public BranchAndBound(List<Scenario> scenarios, Movie movieInstance)
         {
             this.InitData(scenarios);
         }
@@ -46,6 +47,7 @@ namespace GeneticFilmPlanification
             {
                 // clona la lista
                 this.Combination = this.ShallowClone(this.FilmingCalendars.ElementAt(i).Scenes);
+                this.CurrentFilmingCalendarID = this.FilmingCalendars.ElementAt(i).AssignedScenario;
                 MakeCombination(this.FilmingCalendars.ElementAt(i).Scenes);
             }
         }
@@ -119,15 +121,15 @@ namespace GeneticFilmPlanification
         /// - Disponibilidad de Actores
         /// - Disponibilidad de Localizaciones
         /// - Verificación de Jornadas
+        /// 
+        /// Este metodo revisara desde el día 1 hasta el último día, esto con el fin
+        /// de encontrar un espacio disponible en alguno de estos días
         /// </summary>
         /// <param name="combination"></param>
         /// <returns></returns>
-        private bool ValidateCombination(List<Scene> combination)
+        private bool ValidateCombination(List<Scene> combination, int FC_ID)
         {
-            foreach(Scene s in combination)
-            {
-                
-            }
+            foreach(Scenario s in )
             return false;
         }
     }
