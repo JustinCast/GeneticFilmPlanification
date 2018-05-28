@@ -112,5 +112,20 @@ namespace GeneticFilmPlanification
                 c += s.Location.ID + "-";
             Console.WriteLine(c);
         }
+
+        /// <summary>
+        /// Método que valida si una combinación de escenas es válida
+        /// Teniendo en cuenta validaciones como:
+        /// - Disponibilidad de Actores
+        /// - Disponibilidad de Localizaciones
+        /// - Verificación de Jornadas
+        /// </summary>
+        /// <param name="combination"></param>
+        /// <returns></returns>
+        private bool ValidateCombination(List<Scene> combination)
+        {
+
+            return false;
+        }
     }
 }
