@@ -65,8 +65,10 @@ namespace GeneticFilmPlanification
                 }
                 FilmingCalendar newDesendent1= changeScenes(chromosome2, descendent1);
                 FilmingCalendar newDesendent2= changeScenes(chromosome1, descendent2);
-                movie.Scenarios[positionScenario].FilmingCalendars.Add(newDesendent1);
-                movie.Scenarios[positionScenario].FilmingCalendars.Add(newDesendent2);
+                //movie.Scenarios[positionScenario].FilmingCalendars.Add(newDesendent1);
+                //movie.Scenarios[positionScenario].FilmingCalendars.Add(newDesendent2);
+                List<Day> newList1 = createListWithDays(newDesendent1);
+                List<Day> newList2 = createListWithDays(newDesendent2);
                 chromosome1 = newDesendent1;
                 chromosome2 = newDesendent2;
             }
