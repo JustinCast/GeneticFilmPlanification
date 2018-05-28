@@ -124,7 +124,10 @@ namespace GeneticFilmPlanification
         /// <returns></returns>
         private bool ValidateCombination(List<Scene> combination)
         {
-
+            foreach(Scene s in combination)
+            {
+                
+            }
             return false;
         }
     }
