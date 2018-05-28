@@ -692,8 +692,8 @@ namespace GeneticFilmPlanification
                 if (firstParticipation!=0 && lastParticipation==0) {
                     totalPrice += actor.CostPerDay;
                 }
-                Console.WriteLine("\n");
-                Console.WriteLine("Actor: "+ actor.ID+" First participation: day"+firstParticipation+"  last participation: day"+lastParticipation+"  CostPerDay: "+actor.CostPerDay);
+                //Console.WriteLine("\n");
+                //Console.WriteLine("Actor: "+ actor.ID+" First participation: day"+firstParticipation+"  last participation: day"+lastParticipation+"  CostPerDay: "+actor.CostPerDay);
                 firstParticipation = 0;
                 lastParticipation = 0;
             }
