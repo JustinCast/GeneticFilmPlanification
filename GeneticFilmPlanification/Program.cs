@@ -27,13 +27,12 @@ namespace GeneticFilmPlanification
 
             Pmx.performCrossingPMX(movie.Scenarios[0].FilmingCalendars[0], movie, 0);//calendario, pelicula, posicion del escenario
 
-            foreach (List<Day> days in movie.Scenarios[0].possibleDays) {
-                foreach (Scene scene in ) {
+            List<Day> days=Pmx.chooseTheBestCalendar(movie,0);//pelicula, posición del escenario
 
-                }
-            }
+            int costo1= Data.calculatePriceOfCalendar(movie, 0, movie.Scenarios[0].Days);
+            int costo2 = Data.calculatePriceOfCalendar(movie, 0, days);
 
-
+            Console.WriteLine("calendario original el costo es de : "+costo1+" calendario mutado el costo es de : "+costo2);
 
             //int coste=Data.calculatePriceOfCalendar(movie,0,movie.Scenarios[0].FilmingCalendars[0]);
 

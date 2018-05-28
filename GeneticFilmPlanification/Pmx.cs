@@ -78,14 +78,22 @@ namespace GeneticFilmPlanification
             }
         }
 
-        public FilmingCalendar chooseTheBestCalendar(Movie movie, int positionScenario) {
-            FilmingCalendar bestCalendar= movie.Scenarios[positionScenario].FilmingCalendars[0];
-            foreach (FilmingCalendar calendar in movie.Scenarios[positionScenario].FilmingCalendars) {
-                if (calendar.Cost>bestCalendar.Cost) {
-                    bestCalendar = calendar;
+        public static List<Day> chooseTheBestCalendar(Movie movie, int positionScenario) {
+            List<Day> bestList=null;
+            int totalcost = 0;
+            foreach (List<Day> days in movie.Scenarios[positionScenario].possibleDays) {
+                int cost=Data.calculatePriceOfCalendar(movie,positionScenario,days);
+                if (bestList==null) {
+                    bestList = days;
+                    totalcost = cost;
+                    continue;
+                }
+                if (bestList != null && cost<totalcost) {
+                    bestList = days;
+                    totalcost = cost;
                 }
             }
-            return bestCalendar;
+            return bestList;
         }
 
         
