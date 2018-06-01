@@ -127,10 +127,10 @@ namespace GeneticFilmPlanification
         /// </summary>
         /// <param name="combination"></param>
         /// <returns></returns>
-        private bool ValidateCombination(List<Scene> combination, int FC_ID)
+        /*private bool ValidateCombination(List<Scene> combination, int FC_ID)
         {
             foreach(Scenario s in )
             return false;
-        }
+        }*/
     }
 }

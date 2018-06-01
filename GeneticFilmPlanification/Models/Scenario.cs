@@ -18,6 +18,6 @@ namespace GeneticFilmPlanification.Models
 
         public List<List<Day>> possibleDays = new List<List<Day>>();// PMX = se ingresaran listas con los posibles dias en diferentes ordenes en el que se realizaran las escenas
 
-        public Day GetDay()
+        /*public Day GetDay()*/
     }
 }

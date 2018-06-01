@@ -9,6 +9,8 @@ namespace GeneticFilmPlanification
 {
     class Pmx
     {
+        static Movie movie = Movie.GetInstance();
+
         public static FilmingCalendar generateChromosome(FilmingCalendar calendar)
         {// Se recorre las escenas de un calendario y se le van agregando inversamente a otro
             FilmingCalendar currentCalendar = calendar;
@@ -41,13 +43,13 @@ namespace GeneticFilmPlanification
             return sonCalendar;
         }
 
-        public static void performCrossingPMX(FilmingCalendar calendar, Movie movie, int positionScenario)
+        public static void performCrossingPMX(int positionScenario)
         {// Se realiza el cruce de las escenas 
-            FilmingCalendar chromosome1;                                    // Recalcar este metodo crea dos descendientes a la vez
+            FilmingCalendar chromosome1;   // Recalcar este metodo crea dos descendientes a la vez
             FilmingCalendar chromosome2;
             chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0];
             chromosome2 = generateChromosome(chromosome1);
-            int size = calendar.Scenes.Count;
+            int size = movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes.Count;
             int start = (size - size / 2) / 2;
             int end = (size - start) - 1;
             FilmingCalendar descendent1;
@@ -76,20 +78,20 @@ namespace GeneticFilmPlanification
                 FilmingCalendar newDesendent2 = changeScenes(chromosome1, descendent2);
 
 
-                accommodateScenesInDays(newDesendent1, movie, positionScenario);
-                accommodateScenesInDays(newDesendent2, movie, positionScenario);
+                accommodateScenesInDays(newDesendent1, positionScenario);
+                accommodateScenesInDays(newDesendent2, positionScenario);
                 chromosome1 = newDesendent1;
                 chromosome2 = newDesendent2;
             }
         }
 
-        public static List<Day> chooseTheBestCalendar(Movie movie, int positionScenario)
+        public static List<Day> chooseTheBestCalendar(int positionScenario)
         {
             List<Day> bestList = null;
             int totalcost = 0;
             foreach (List<Day> days in movie.Scenarios[positionScenario].possibleDays)
             {
-                int cost = Data.calculatePriceOfCalendar(movie, positionScenario, days);
+                int cost = Data.calculatePriceOfCalendar(positionScenario, days);
                 if (bestList == null)
                 {
                     bestList = days;
@@ -177,7 +179,7 @@ namespace GeneticFilmPlanification
             return newDays;
         }
 
-        public static void accommodateScenesInDays(FilmingCalendar calendar, Movie movie, int positionScenario)
+        public static void accommodateScenesInDays(FilmingCalendar calendar, int positionScenario)
         {// resive el calendario que fue cruzado y se asignan las escenas del mismo a nuevos dias 
             List<Day> newDays = createListWithDays(calendar);
 

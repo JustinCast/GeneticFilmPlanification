@@ -9,37 +9,24 @@ namespace GeneticFilmPlanification
 {
     class Program
     {
+        static Movie movie = Movie.GetInstance();
         static void Main(string[] args)
         {
-            Movie movie = new Movie();
-            Data.createScenariosOfMovie(movie);
-            Data.createScenario1(5, 40, movie, 0);// location ,actors, pelicula, posicion del escenario
-            Data.createScenario2(6, 60, movie, 1);// location ,actors, pelicula, posicion del escenario
-            Data.createScenario3(7, 100, movie, 2);// location ,actors, pelicula, posicion del escenario
-            Data.createScenario4(8, 80, movie, 3);// location ,actors, pelicula, posicion del escenario
-            Data.printScenarios(movie);
-            Data.createDays(movie);
-            Data.assignScenesToDay(movie, 0);// pelicula, posicion del escenario
-            Data.assignScenesToDay(movie, 1);
-            Data.assignScenesToDay(movie, 2);
-            Data.assignScenesToDay(movie, 3);
-            Data.assignLocationsToDay(movie);
 
-            Pmx.performCrossingPMX(movie.Scenarios[0].FilmingCalendars[0], movie, 0);//calendario, pelicula, posicion del escenario
+            Data.createScenariosOfMovie();
+            Data.createScenario1(5, 40, 0);// location ,actors, posicion del escenario
+            Data.createScenario2(6, 60, 1);// location ,actors, posicion del escenario
+            Data.createScenario3(7, 100, 2);// location ,actors, posicion del escenario
+            Data.createScenario4(8, 80, 3);// location ,actors, posicion del escenario
+            Data.printScenarios();
+            Data.createDays();
+            Data.assignScenesToDay(0);// posicion del escenario
+            Data.assignScenesToDay(1);
+            Data.assignScenesToDay(2);
+            Data.assignScenesToDay(3);
+            Data.assignLocationsToDay();
 
-            List<Day> days=Pmx.chooseTheBestCalendar(movie,0);//pelicula, posición del escenario
-            foreach (List<Day> days in movie.Scenarios[0].possibleDays)
-            {
-                foreach (Scene scene in )
-                {
-
-                }
-            }
-
-            int costo1= Data.calculatePriceOfCalendar(movie, 0, movie.Scenarios[0].Days);
-            int costo2 = Data.calculatePriceOfCalendar(movie, 0, days);
-
-            Console.WriteLine("calendario original el costo es de : "+costo1+" calendario mutado el costo es de : "+costo2);
+            Data.performPmxInAllScenarios();
 
             //int coste=Data.calculatePriceOfCalendar(movie,0,movie.Scenarios[0].FilmingCalendars[0]);
 
