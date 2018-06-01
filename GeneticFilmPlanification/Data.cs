@@ -699,6 +699,7 @@ namespace GeneticFilmPlanification
                 firstParticipation = 0;
                 lastParticipation = 0;
             }
+            //Console.WriteLine("valor del calendario ....................................... "+totalPrice);
             return totalPrice;
         }
 

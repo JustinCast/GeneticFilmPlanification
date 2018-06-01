@@ -54,11 +54,10 @@ namespace GeneticFilmPlanification
             int end = (size - start) - 1;
             FilmingCalendar descendent1;
             FilmingCalendar descendent2;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i <5; i++)
             { // El cruce se realizará la cantidad de veces que se ejecute este for 
                 descendent1 = chromosome1;
                 descendent2 = chromosome2;
-
                 for (int j = 0; j < size; j++)
                 {// for que se encarga de poner en null a las escenas que se encuentren en el rango establecido de los futuros descendientes
                     if (descendent1.Scenes.IndexOf(descendent1.Scenes[j]) > start ||
@@ -77,7 +76,6 @@ namespace GeneticFilmPlanification
                 FilmingCalendar newDesendent1 = changeScenes(chromosome2, descendent1);
                 FilmingCalendar newDesendent2 = changeScenes(chromosome1, descendent2);
 
-
                 accommodateScenesInDays(newDesendent1, positionScenario);
                 accommodateScenesInDays(newDesendent2, positionScenario);
                 chromosome1 = newDesendent1;
@@ -87,19 +85,18 @@ namespace GeneticFilmPlanification
 
         public static List<Day> chooseTheBestCalendar(int positionScenario)
         {
-            List<Day> bestList = null;
-            int totalcost = 0;
+            List<Day> bestList = movie.Scenarios[positionScenario].Days;
+            int totalcost = Data.calculatePriceOfCalendar(positionScenario, movie.Scenarios[positionScenario].Days); ;
+            //int count = -1;
+            //Console.WriteLine("Numero de lista de dias "+movie.Scenarios[positionScenario].possibleDays.Count);
             foreach (List<Day> days in movie.Scenarios[positionScenario].possibleDays)
             {
                 int cost = Data.calculatePriceOfCalendar(positionScenario, days);
-                if (bestList == null)
+                //count += 1;
+                //Console.WriteLine(" " + count);
+                if (cost < totalcost)
                 {
-                    bestList = days;
-                    totalcost = cost;
-                    continue;
-                }
-                if (bestList != null && cost < totalcost)
-                {
+                    //Console.WriteLine("mejor " + totalcost);
                     bestList = days;
                     totalcost = cost;
                 }
