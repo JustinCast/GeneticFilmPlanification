@@ -21,25 +21,38 @@ namespace GeneticFilmPlanification
             }
             return newCalendar;
         }
+        public static bool verifyIfExists(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar) {
+            Console.WriteLine("numero de scenas father: "+fatherCalendar.Scenes.Count);
+            Console.WriteLine("numero de scenas son: " + sonCalendar.Scenes.Count);
+            foreach (Scene scene1 in fatherCalendar.Scenes) {
+                foreach (Scene scene2 in sonCalendar.Scenes) {
+                    Console.WriteLine("scene id: "+scene1.id+"  scene id: "+scene2.id);
+                    if (scene1.id.Equals(scene2.id)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }    
 
         public static FilmingCalendar changeScenes(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar)
         {
-
-            for (int k = 0; k < fatherCalendar.Scenes.Count; k++)
-            {// recorre las escenas del padre 2 con el fin de asignarla a una escena del desentiente 1 que se encuentre en marcada como true 
-                for (int n = 0; n < sonCalendar.Scenes.Count; n++)
-                {// recorre las escenas del desenciente hasta encontrar una que este marcada como true 
-                    if (sonCalendar.Scenes[n].marked == true)
+            for (int n = 0; n < sonCalendar.Scenes.Count; n++)
+            {// recorre las escenas del desenciente hasta encontrar una que este marcada como true 
+                if (sonCalendar.Scenes[n].marked == true)
+                {
+                    for (int k = 0; k < fatherCalendar.Scenes.Count; k++)
                     {
-                        bool exists = sonCalendar.Scenes.Contains(fatherCalendar.Scenes[k]);// verifica si existe la escena del padre en el hijo
+                        bool exists = verifyIfExists(fatherCalendar, sonCalendar);// verifica si existe la escena del padre en el hijo
+                        Console.WriteLine("Estos son los exists "+exists);
                         if (exists == false)
                         {
                             sonCalendar.Scenes[n].marked = false;
                             sonCalendar.Scenes[n] = fatherCalendar.Scenes[k];// se le asigna a la escena que estaba en null la escena que no se encuentra en ese calendario aún
                         }
-                    }
+                    }                   
                 }
-            }
+            } 
             return sonCalendar;
         }
 
@@ -48,28 +61,35 @@ namespace GeneticFilmPlanification
             FilmingCalendar chromosome1;   // Recalcar este metodo crea dos descendientes a la vez
             FilmingCalendar chromosome2;
             chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0];
+            
             chromosome2 = generateChromosome(chromosome1);
             int size = movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes.Count;
             int start = (size - size / 2) / 2;
             int end = (size - start) - 1;
+            Console.WriteLine("start "+ start);
+            Console.WriteLine("end " + end );
             FilmingCalendar descendent1;
             FilmingCalendar descendent2;
-            for (int i = 0; i <5; i++)
+            for (int i = 0; i <1; i++)
             { // El cruce se realizará la cantidad de veces que se ejecute este for 
                 descendent1 = chromosome1;
                 descendent2 = chromosome2;
                 for (int j = 0; j < size; j++)
                 {// for que se encarga de poner en null a las escenas que se encuentren en el rango establecido de los futuros descendientes
-                    if (descendent1.Scenes.IndexOf(descendent1.Scenes[j]) > start ||
-                        descendent1.Scenes.IndexOf(descendent1.Scenes[j]) < end)
+                    if (descendent1.Scenes.IndexOf(descendent1.Scenes[j]) > start &&
+                        descendent1.Scenes.IndexOf(descendent1.Scenes[j]) < end && descendent1.Scenes[j].marked==false)
                     {
+                        
                         descendent1.Scenes[j].marked = true;
+                        descendent1.Scenes[j].id = "0";
 
                     }
-                    if (descendent2.Scenes.IndexOf(descendent2.Scenes[j]) > start ||
-                        descendent2.Scenes.IndexOf(descendent2.Scenes[j]) < end)
+                    Console.WriteLine("Marcado en la posicion " + j + "........" + descendent1.Scenes[j].marked+" shedule"+ descendent1.Scenes[j].Schedule);
+                    if (descendent2.Scenes.IndexOf(descendent2.Scenes[j]) > start &&
+                        descendent2.Scenes.IndexOf(descendent2.Scenes[j]) < end && descendent1.Scenes[j].marked == false)
                     {
                         descendent2.Scenes[j].marked = true;
+                        descendent2.Scenes[j].id = "0";
                     }
                 }
 
@@ -103,8 +123,6 @@ namespace GeneticFilmPlanification
             }
             return bestList;
         }
-
-
 
         public static int availableSpace(Time Shedule)
         {// retorna cuanto espacio tiene la jornada segun sus paginas 

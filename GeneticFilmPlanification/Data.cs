@@ -177,13 +177,14 @@ namespace GeneticFilmPlanification
             return null;
         }
 
-        public static void createScene(int pages, bool shedule,string idLocation, int positionScenario  ) {
+        public static void createScene(int pages, bool shedule,string idLocation, int positionScenario, String id  ) {
             Scene newScene = new Scene();
             Location currentLocation = searchLocation(idLocation,positionScenario);
             newScene.Location = currentLocation;
             currentLocation.InUse = true;
             newScene.Pages = pages;
             newScene.Schedule = shedule;
+            newScene.id = id;
             movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes.Add(newScene);
         }
 
@@ -214,61 +215,61 @@ namespace GeneticFilmPlanification
             //las relaciones de las escenas en este escenario serán:
             //Poseerán 4 actores cada una, 1 localidad, 1 rol de día y 1 de noche.
 
-            createScene(10, true,"1", positionScenario);//pages, shedule, idLocation, posicion del escenario
+            createScene(10, true,"1", positionScenario,"1");//pages, shedule, idLocation, posicion del escenario,id
             assignActorToScene("1",0, positionScenario);// idactor, positionScene, posicion del escenario
             assignActorToScene("2", 0, positionScenario);
             assignActorToScene("4", 0, positionScenario);
             assignActorToScene("5", 0, positionScenario);
 
-            createScene(12, true, "2", positionScenario);
+            createScene(12, true, "2", positionScenario, "2");
             assignActorToScene("6", 1, positionScenario);
             assignActorToScene("7", 1, positionScenario);
             assignActorToScene("8", 1, positionScenario);
             assignActorToScene("9", 1, positionScenario);
 
-            createScene(15, true, "3", positionScenario);
+            createScene(15, true, "3", positionScenario, "3");
             assignActorToScene("17", 2, positionScenario);
             assignActorToScene("16", 2, positionScenario);
             assignActorToScene("15", 2, positionScenario);
             assignActorToScene("14", 2, positionScenario);
 
-            createScene(9, true, "4", positionScenario);
+            createScene(9, true, "4", positionScenario, "4");
             assignActorToScene("40", 3, positionScenario);
             assignActorToScene("39", 3, positionScenario);
             assignActorToScene("38", 3, positionScenario);
             assignActorToScene("37", 3, positionScenario);
 
-            createScene(8, true, "5", positionScenario);
+            createScene(8, true, "5", positionScenario, "5");
             assignActorToScene("40", 4, positionScenario);
             assignActorToScene("39", 4, positionScenario);
             assignActorToScene("38", 4, positionScenario);
             assignActorToScene("37", 4, positionScenario);
 
-            createScene(12, false, "2", positionScenario);
+            createScene(12, false, "2", positionScenario, "6");
             assignActorToScene("6", 5, positionScenario);
             assignActorToScene("17", 5, positionScenario);
             assignActorToScene("16", 5, positionScenario);
             assignActorToScene("15", 5, positionScenario);
 
-            createScene(20, false, "4", positionScenario);
+            createScene(20, false, "4", positionScenario, "7");
             assignActorToScene("6", 6, positionScenario);
             assignActorToScene("7", 6, positionScenario);
             assignActorToScene("8", 6, positionScenario);
             assignActorToScene("10", 6, positionScenario);
 
-            createScene(9, false, "1", positionScenario);
+            createScene(9, false, "1", positionScenario, "8");
             assignActorToScene("12", 7, positionScenario);
             assignActorToScene("15", 7, positionScenario);
             assignActorToScene("16", 7, positionScenario);
             assignActorToScene("17", 7, positionScenario);
 
-            createScene(15, false, "5", positionScenario);
+            createScene(15, false, "5", positionScenario, "9");
             assignActorToScene("12", 8, positionScenario);
             assignActorToScene("39", 8, positionScenario);
             assignActorToScene("38", 8, positionScenario);
             assignActorToScene("37", 8, positionScenario);
 
-            createScene(21, false, "3", positionScenario);
+            createScene(21, false, "3", positionScenario, "10");
             assignActorToScene("1", 9, positionScenario);
             assignActorToScene("2", 9, positionScenario);
             assignActorToScene("4", 9, positionScenario);
@@ -284,77 +285,77 @@ namespace GeneticFilmPlanification
             //Escenario dos: Contendrá 15 escenas, 6 localidades, 60 actores disponibles, las relaciones de las escenas en este escenario serán:
             //Poseerán 3 actores cada una, 1 localidad, 1 rol de día y 1 de noche.
 
-            createScene(23, true, "1", positionScenario);//pages, shedule, idLocation, scenario position 
+            createScene(23, true, "1", positionScenario, "1");//pages, shedule, idLocation, scenario position ,id
             assignActorToScene("1", 0, positionScenario);// idactor, positionScene, posicion del escenario
             assignActorToScene("4", 0, positionScenario);
             assignActorToScene("20", 0, positionScenario);
 
-            createScene(21, true, "6", positionScenario);
+            createScene(21, true, "6", positionScenario, "2");
             assignActorToScene("1", 1, positionScenario);
             assignActorToScene("20", 1, positionScenario);
             assignActorToScene("19", 1, positionScenario);
 
-            createScene(10, true, "5", positionScenario);
+            createScene(10, true, "5", positionScenario, "3");
             assignActorToScene("44", 2, positionScenario);
             assignActorToScene("55", 2, positionScenario);
             assignActorToScene("56", 2, positionScenario);
 
-            createScene(10, true, "3", positionScenario);
+            createScene(10, true, "3", positionScenario, "4");
             assignActorToScene("1", 3, positionScenario);
             assignActorToScene("21", 3, positionScenario);
             assignActorToScene("4", 3, positionScenario);
 
-            createScene(11, true, "4", positionScenario);
+            createScene(11, true, "4", positionScenario, "5");
             assignActorToScene("55", 4, positionScenario);
             assignActorToScene("19", 4, positionScenario);
             assignActorToScene("44", 4, positionScenario);
 
-            createScene(12, true, "2", positionScenario);
+            createScene(12, true, "2", positionScenario, "6");
             assignActorToScene("19", 5, positionScenario);
             assignActorToScene("4", 5, positionScenario);
             assignActorToScene("20", 5, positionScenario);
 
-            createScene(13, true, "1", positionScenario);
+            createScene(13, true, "1", positionScenario, "7");
             assignActorToScene("40", 6, positionScenario);
             assignActorToScene("44", 6, positionScenario);
             assignActorToScene("1", 6, positionScenario);
 
-            createScene(16, true, "2", positionScenario);
+            createScene(16, true, "2", positionScenario, "8");
             assignActorToScene("9", 7, positionScenario);
             assignActorToScene("12", 7, positionScenario);
             assignActorToScene("10", 7, positionScenario);
 
-            createScene(14, false, "3", positionScenario);
+            createScene(14, false, "3", positionScenario, "9");
             assignActorToScene("1", 8, positionScenario);
             assignActorToScene("44", 8, positionScenario);
             assignActorToScene("10", 8, positionScenario);
 
-            createScene(15, false, "4", positionScenario);
+            createScene(15, false, "4", positionScenario, "10");
             assignActorToScene("1", 9, positionScenario);
             assignActorToScene("60", 9, positionScenario);
             assignActorToScene("4", 9, positionScenario);
 
-            createScene(22, false, "6", positionScenario);
+            createScene(22, false, "6", positionScenario, "11");
             assignActorToScene("40", 10, positionScenario);
             assignActorToScene("33", 10, positionScenario);
             assignActorToScene("10", 10, positionScenario);
 
-            createScene(23, false, "6", positionScenario);
+            createScene(23, false, "6", positionScenario, "12");
             assignActorToScene("19", 11, positionScenario);
             assignActorToScene("1", 11, positionScenario);
             assignActorToScene("30", 11, positionScenario);
 
-            createScene(24, false, "5", positionScenario);
+            createScene(24, false, "5", positionScenario, "13");
             assignActorToScene("33", 12, positionScenario);
             assignActorToScene("60", 12, positionScenario);
             assignActorToScene("40", 12, positionScenario);
 
-            createScene(11, false, "4", positionScenario);
+            createScene(11, false, "4", positionScenario, "14");
             assignActorToScene("60", 13, positionScenario);
             assignActorToScene("30", 13, positionScenario);
             assignActorToScene("4", 13, positionScenario);
 
-            createScene(19, false, "3", positionScenario);
+            createScene(19, false, "3", positionScenario, "15");
             assignActorToScene("21", 14, positionScenario);
             assignActorToScene("20", 14, positionScenario);
             assignActorToScene("4", 14, positionScenario);
@@ -368,121 +369,121 @@ namespace GeneticFilmPlanification
             //Escenario cuatro: Contendrá 20 escenas, 8 localidades, 80 actores disponibles, las relaciones de las escenas en este escenario serán:
             //Poseerán 4 actores cada una, 1 localidad, 1 rol de día y 1 de noche.
 
-            createScene(24, true, "1", positionScenario);//pages, shedule, idLocation, pelicula, posicion del escenario
+            createScene(24, true, "1", positionScenario, "1");//pages, shedule, idLocation, pelicula, posicion del escenario,id
             assignActorToScene("80", 0, positionScenario);// idactor, positionScene, pelicula, posicion del escenario
             assignActorToScene("70", 0, positionScenario);
             assignActorToScene("60", 0, positionScenario);
             assignActorToScene("61", 0, positionScenario);
 
-            createScene(24, true, "8", positionScenario);
+            createScene(24, true, "8", positionScenario, "2");
             assignActorToScene("10", 1, positionScenario);
             assignActorToScene("4", 1, positionScenario);
             assignActorToScene("11", 1, positionScenario);
             assignActorToScene("80", 1, positionScenario);
 
-            createScene(14, true, "7", positionScenario);
+            createScene(14, true, "7", positionScenario, "3");
             assignActorToScene("60", 2, positionScenario);
             assignActorToScene("3", 2, positionScenario);
             assignActorToScene("61", 2, positionScenario);
             assignActorToScene("6", 2, positionScenario);
 
-            createScene(16, true, "1", positionScenario);
+            createScene(16, true, "1", positionScenario, "4");
             assignActorToScene("80", 3, positionScenario);
             assignActorToScene("77", 3, positionScenario);
             assignActorToScene("60", 3, positionScenario);
             assignActorToScene("19", 3, positionScenario);
 
-            createScene(19, true, "1", positionScenario);
+            createScene(19, true, "1", positionScenario, "5");
             assignActorToScene("20", 4, positionScenario);
             assignActorToScene("55", 4, positionScenario);
             assignActorToScene("4", 4, positionScenario);
             assignActorToScene("10", 4, positionScenario);
 
-            createScene(18, true, "1", positionScenario);
+            createScene(18, true, "1", positionScenario, "6");
             assignActorToScene("61", 5, positionScenario);
             assignActorToScene("77", 5, positionScenario);
             assignActorToScene("55", 5, positionScenario);
             assignActorToScene("11", 5, positionScenario);
 
-            createScene(23, true, "8", positionScenario);
+            createScene(23, true, "8", positionScenario, "7");
             assignActorToScene("77", 6, positionScenario);
             assignActorToScene("16", 6, positionScenario);
             assignActorToScene("60", 6, positionScenario);
             assignActorToScene("33", 6, positionScenario);
 
-            createScene(11, true, "8", positionScenario);
+            createScene(11, true, "8", positionScenario, "8");
             assignActorToScene("22", 7, positionScenario);
             assignActorToScene("24", 7, positionScenario);
             assignActorToScene("77", 7, positionScenario);
             assignActorToScene("74", 7, positionScenario);
 
-            createScene(14, true, "6", positionScenario);
+            createScene(14, true, "6", positionScenario, "9");
             assignActorToScene("10", 8, positionScenario);
             assignActorToScene("30", 8, positionScenario);
             assignActorToScene("32", 8, positionScenario);
             assignActorToScene("55", 8, positionScenario);
 
-            createScene(15, true, "4", positionScenario);
+            createScene(15, true, "4", positionScenario, "10");
             assignActorToScene("4", 9, positionScenario);
             assignActorToScene("19", 9, positionScenario);
             assignActorToScene("16", 9, positionScenario);
             assignActorToScene("77", 9, positionScenario);
 
-            createScene(16, false, "3", positionScenario);
+            createScene(16, false, "3", positionScenario, "11");
             assignActorToScene("10", 10, positionScenario);
             assignActorToScene("12", 10, positionScenario);
             assignActorToScene("11", 10, positionScenario);
             assignActorToScene("3", 10, positionScenario);
 
-            createScene(20, false, "1", positionScenario);
+            createScene(20, false, "1", positionScenario, "12");
             assignActorToScene("14", 11, positionScenario);
             assignActorToScene("13", 11, positionScenario);
             assignActorToScene("79", 11, positionScenario);
             assignActorToScene("15", 11, positionScenario);
 
-            createScene(19, false, "3", positionScenario);
+            createScene(19, false, "3", positionScenario, "13");
             assignActorToScene("13", 12, positionScenario);
             assignActorToScene("14", 12, positionScenario);
             assignActorToScene("79", 12, positionScenario);
             assignActorToScene("44", 12, positionScenario);
 
-            createScene(25, false, "5", positionScenario);
+            createScene(25, false, "5", positionScenario, "14");
             assignActorToScene("14", 13, positionScenario);
             assignActorToScene("78", 13, positionScenario);
             assignActorToScene("15", 13, positionScenario);
             assignActorToScene("79", 13, positionScenario);
 
-            createScene(22, false, "6", positionScenario);
+            createScene(22, false, "6", positionScenario, "15");
             assignActorToScene("8", 14, positionScenario);
             assignActorToScene("7", 14, positionScenario);
             assignActorToScene("9", 14, positionScenario);
             assignActorToScene("55", 14, positionScenario);
 
-            createScene(14, false, "6", positionScenario);
+            createScene(14, false, "6", positionScenario, "16");
             assignActorToScene("3", 15, positionScenario);
             assignActorToScene("79", 15, positionScenario);
             assignActorToScene("15", 15, positionScenario);
             assignActorToScene("14", 15, positionScenario);
 
-            createScene(19, false, "7", positionScenario);
+            createScene(19, false, "7", positionScenario, "17");
             assignActorToScene("15", 16, positionScenario);
             assignActorToScene("33", 16, positionScenario);
             assignActorToScene("2", 16, positionScenario);
             assignActorToScene("1", 16, positionScenario);
 
-            createScene(18, false, "2", positionScenario);
+            createScene(18, false, "2", positionScenario, "18");
             assignActorToScene("33", 17, positionScenario);
             assignActorToScene("55", 17, positionScenario);
             assignActorToScene("78", 17, positionScenario);
             assignActorToScene("22", 17, positionScenario);
 
-            createScene(17, false, "8", positionScenario);
+            createScene(17, false, "8", positionScenario, "19");
             assignActorToScene("79", 18, positionScenario);
             assignActorToScene("19", 18, positionScenario);
             assignActorToScene("77", 18, positionScenario);
             assignActorToScene("12", 18, positionScenario);
 
-            createScene(18, false, "3", positionScenario);
+            createScene(18, false, "3", positionScenario, "20");
             assignActorToScene("78", 19, positionScenario);
             assignActorToScene("34", 19, positionScenario);
             assignActorToScene("64", 19, positionScenario);
@@ -498,118 +499,118 @@ namespace GeneticFilmPlanification
             //Escenario tres: Contendrá 17 escenas, 7 localidades, 100 actores disponibles, las relaciones de las escenas en este escenario serán:
             //Poseerán 5 actores cada una, 1 localidad, 1 rol de día y 1 de noche.
 
-            createScene(13, true, "1",positionScenario);//pages, shedule, idLocation , posicion del escenario
+            createScene(13, true, "1",positionScenario,"1");//pages, shedule, idLocation , posicion del escenario,id
             assignActorToScene("1", 0, positionScenario);// idactor, positionScene, posicion del escenario
             assignActorToScene("100", 0, positionScenario);
             assignActorToScene("80", 0, positionScenario);
             assignActorToScene("8", 0, positionScenario);
             assignActorToScene("7", 0, positionScenario);
 
-            createScene(20, true, "2", positionScenario);
+            createScene(20, true, "2", positionScenario, "2");
             assignActorToScene("5", 1, positionScenario);
             assignActorToScene("1", 1, positionScenario);
             assignActorToScene("67", 1, positionScenario);
             assignActorToScene("34", 1, positionScenario);
             assignActorToScene("30", 1, positionScenario);
 
-            createScene(24, true, "7", positionScenario);
+            createScene(24, true, "7", positionScenario, "3");
             assignActorToScene("20", 2, positionScenario);
             assignActorToScene("8", 2, positionScenario);
             assignActorToScene("99", 2, positionScenario);
             assignActorToScene("1", 2, positionScenario);
             assignActorToScene("30", 2, positionScenario);
 
-            createScene(11, true, "7", positionScenario);
+            createScene(11, true, "7", positionScenario, "4");
             assignActorToScene("100", 3, positionScenario);
             assignActorToScene("22", 3, positionScenario);
             assignActorToScene("7", 3, positionScenario);
             assignActorToScene("35", 3, positionScenario);
             assignActorToScene("94", 3, positionScenario);
 
-            createScene(18, true, "6", positionScenario);
+            createScene(18, true, "6", positionScenario, "5");
             assignActorToScene("14", 4, positionScenario);
             assignActorToScene("40", 4, positionScenario);
             assignActorToScene("20", 4, positionScenario);
             assignActorToScene("69", 4, positionScenario);
             assignActorToScene("68", 4, positionScenario);
 
-            createScene(13, true, "7", positionScenario);
+            createScene(13, true, "7", positionScenario, "6");
             assignActorToScene("78", 5, positionScenario);
             assignActorToScene("58", 5, positionScenario);
             assignActorToScene("29", 5, positionScenario);
             assignActorToScene("2", 5, positionScenario);
             assignActorToScene("100", 5, positionScenario);
 
-            createScene(19, true, "4", positionScenario);
+            createScene(19, true, "4", positionScenario, "7");
             assignActorToScene("78", 6, positionScenario);
             assignActorToScene("28", 6, positionScenario);
             assignActorToScene("20", 6, positionScenario);
             assignActorToScene("30", 6, positionScenario);
             assignActorToScene("40", 6, positionScenario);
 
-            createScene(17, true, "3", positionScenario);
+            createScene(17, true, "3", positionScenario, "8");
             assignActorToScene("20", 7, positionScenario);
             assignActorToScene("8", 7, positionScenario);
             assignActorToScene("99", 7, positionScenario);
             assignActorToScene("78", 7, positionScenario);
             assignActorToScene("29", 7, positionScenario);
 
-            createScene(16, true, "3", positionScenario);
+            createScene(16, true, "3", positionScenario, "9");
             assignActorToScene("58", 8, positionScenario);
             assignActorToScene("1", 8, positionScenario);
             assignActorToScene("8", 8, positionScenario);
             assignActorToScene("22", 8, positionScenario);
             assignActorToScene("78", 8, positionScenario);
 
-            createScene(21, false, "7", positionScenario);
+            createScene(21, false, "7", positionScenario, "10");
             assignActorToScene("10", 9, positionScenario);
             assignActorToScene("14", 9, positionScenario);
             assignActorToScene("4", 9, positionScenario);
             assignActorToScene("58", 9, positionScenario);
             assignActorToScene("78", 9, positionScenario);
 
-            createScene(17, false, "4", positionScenario);
+            createScene(17, false, "4", positionScenario, "11");
             assignActorToScene("98", 10, positionScenario);
             assignActorToScene("65", 10, positionScenario);
             assignActorToScene("1", 10, positionScenario);
             assignActorToScene("78", 10, positionScenario);
             assignActorToScene("28", 10, positionScenario);
 
-            createScene(24, false, "7", positionScenario);
+            createScene(24, false, "7", positionScenario, "12");
             assignActorToScene("13", 11, positionScenario);
             assignActorToScene("79", 11, positionScenario);
             assignActorToScene("35", 11, positionScenario);
             assignActorToScene("18", 11, positionScenario);
             assignActorToScene("10", 11, positionScenario);
 
-            createScene(22, false, "4", positionScenario);
+            createScene(22, false, "4", positionScenario, "13");
             assignActorToScene("99", 12, positionScenario);
             assignActorToScene("3", 12, positionScenario);
             assignActorToScene("30", 12, positionScenario);
             assignActorToScene("100", 12, positionScenario);
             assignActorToScene("4", 12, positionScenario);
 
-            createScene(23, false, "5", positionScenario);
+            createScene(23, false, "5", positionScenario, "14");
             assignActorToScene("98", 13, positionScenario);
             assignActorToScene("24", 13,positionScenario);
             assignActorToScene("10", 13, positionScenario);
             assignActorToScene("14", 13, positionScenario);
 
-            createScene(18, false, "6", positionScenario);
+            createScene(18, false, "6", positionScenario, "15");
             assignActorToScene("17", 14, positionScenario);
             assignActorToScene("3", 14, positionScenario);
             assignActorToScene("2", 14, positionScenario);
             assignActorToScene("10", 14, positionScenario);
             assignActorToScene("11", 14, positionScenario);
 
-            createScene(17, false, "2", positionScenario);
+            createScene(17, false, "2", positionScenario, "16");
             assignActorToScene("7", 15, positionScenario);
             assignActorToScene("8", 15, positionScenario);
             assignActorToScene("3", 15, positionScenario);
             assignActorToScene("4", 15, positionScenario);
             assignActorToScene("14", 15, positionScenario);
 
-            createScene(15, false, "1", positionScenario);
+            createScene(15, false, "1", positionScenario, "17");
             assignActorToScene("67", 16, positionScenario);
             assignActorToScene("68", 16, positionScenario);
             assignActorToScene("66", 16, positionScenario);
