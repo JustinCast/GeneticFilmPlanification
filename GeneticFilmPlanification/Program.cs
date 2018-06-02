@@ -30,6 +30,9 @@ namespace GeneticFilmPlanification
 
             //int coste=Data.calculatePriceOfCalendar(movie,0,movie.Scenarios[0].FilmingCalendars[0]);
 
+            BranchAndBound BB = new BranchAndBound(movie.Scenarios, movie);
+            BB.RunBB();
+
             Console.ReadKey();
         }
     }

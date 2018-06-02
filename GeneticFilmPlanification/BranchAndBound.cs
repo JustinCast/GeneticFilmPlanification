@@ -11,53 +11,68 @@ namespace GeneticFilmPlanification
 {
     class BranchAndBound
     {
-        private List<FilmingCalendar> FilmingCalendars = new List<FilmingCalendar>();
-        private FilmingCalendar BSSF;
+        // calendarios de cada escenario
+        private List<FilmingCalendar> Scenario1Calendars = new List<FilmingCalendar>();
+        private List<FilmingCalendar> Scenario2Calendars = new List<FilmingCalendar>();
+        private List<FilmingCalendar> Scenario3Calendars = new List<FilmingCalendar>();
+        private List<FilmingCalendar> Scenario4Calendars = new List<FilmingCalendar>();
+
+        // mejores soluciones para cada calendario
+        private FilmingCalendar BSSF1;
+        private FilmingCalendar BSSF2;
+        private FilmingCalendar BSSF3;
+        private FilmingCalendar BSSF4;
         private int CurrentFilmingCalendarID = 0;
         /// <summary>
         /// en esta lista se guarda el orden de la combinacion
         /// Cuando la recursividad retorne, se podrá calcular el costo de esa combinacion
         /// </summary>
         private List<Scene> Combination = new List<Scene>();
-        int count = 0;
         public BranchAndBound(List<Scenario> scenarios, Movie movieInstance)
         {
-            this.InitData(scenarios);
-        }
-        /// <summary>
-        /// Metodo que llena de datos a la lista de calendarios
-        /// Estos son necesarios para hacer las combinaciones en el orden de las escenas
-        /// </summary>
-        /// <param name="scenarios"></param>
-        private void InitData(List<Scenario> scenarios)
-        {
-            // la siguiente línea setea por defecto el primer calendario
-            // como mejor solución
-            this.BSSF = scenarios.ElementAt(0).FilmingCalendars.ElementAt(0);
-            this.BSSF.Cost = FilmingCalendar.CalendarCost(BSSF.Scenes);
-            foreach (Scenario s in scenarios)
-            {
-                this.FilmingCalendars.Add(s.FilmingCalendars.ElementAt(0));
-            }
+            // seteo por defecto de las mejores soluciones para cada escenario
+            this.BSSF1 = scenarios.ElementAt(0).FilmingCalendars.ElementAt(0);
+            this.BSSF1.Cost = CombinationCost(0);
+            this.BSSF2 = scenarios.ElementAt(1).FilmingCalendars.ElementAt(0);
+            this.BSSF2.Cost = CombinationCost(1);
+            this.BSSF3 = scenarios.ElementAt(2).FilmingCalendars.ElementAt(0);
+            this.BSSF3.Cost = CombinationCost(2);
+            this.BSSF4 = scenarios.ElementAt(3).FilmingCalendars.ElementAt(0);
+            this.BSSF4.Cost = CombinationCost(3);
+            // inicialización de datos para el algoritmo
+            this.Scenario1Calendars.Add(scenarios[0].FilmingCalendars.ElementAt(0));
+            this.Scenario2Calendars.Add(scenarios[1].FilmingCalendars.ElementAt(0));
+            this.Scenario3Calendars.Add(scenarios[2].FilmingCalendars.ElementAt(0));
+            this.Scenario4Calendars.Add(scenarios[3].FilmingCalendars.ElementAt(0));
         }
 
+        /// <summary>
+        /// Por cada escenario se hace una combinación con el fin
+        /// de obtener el mejor calendario en relación al costo
+        /// </summary>
         public void RunBB()
         {
-            for (int i = 0; i < this.FilmingCalendars.Count; i++)
-            {
-                // clona la lista
-                this.Combination = this.ShallowClone(this.FilmingCalendars.ElementAt(i).Scenes);
-                this.CurrentFilmingCalendarID = this.FilmingCalendars.ElementAt(i).AssignedScenario;
-                MakeCombination(this.FilmingCalendars.ElementAt(i).Scenes);
-            }
+            // Escenario 1
+            this.Combination = this.ShallowClone(this.Scenario1Calendars.ElementAt(0).Scenes);
+            MakeCombination(this.Scenario1Calendars.ElementAt(0).Scenes, BSSF1, 0);
+            // Escenario 2
+            this.Combination = this.ShallowClone(this.Scenario2Calendars.ElementAt(0).Scenes);
+            MakeCombination(this.Scenario2Calendars.ElementAt(0).Scenes, BSSF2, 1);
+            // Escenario 3
+            this.Combination = this.ShallowClone(this.Scenario3Calendars.ElementAt(0).Scenes);
+            MakeCombination(this.Scenario3Calendars.ElementAt(0).Scenes, BSSF3, 2);
+            // Escenario 4
+            this.Combination = this.ShallowClone(this.Scenario4Calendars.ElementAt(0).Scenes);
+            MakeCombination(this.Scenario4Calendars.ElementAt(0).Scenes, BSSF4, 3);
+            //this.CurrentFilmingCalendarID = this.FilmingCalendars.ElementAt(i).AssignedScenario;
         }
         
 
-        private void MakeCombination(List<Scene> scenes)
+        private void MakeCombination(List<Scene> scenes, FilmingCalendar BSSF, int pos)
         {            
             if (scenes.Count == 0) {
-                if (CombinationCost(Combination) < BSSF.Cost)
-                    MakeNewBSSF(Combination);
+                if (CombinationCost(pos) < BSSF.Cost)
+                    MakeNewBSSF(Combination, BSSF, pos);
                 // limpia la lista para que guarde una nueva combinacion
                 this.Combination.Clear();
                 return;
@@ -69,7 +84,7 @@ namespace GeneticFilmPlanification
                  * solución actual, no tiene sentido seguir combinando
                  * IMPLEMENTACION LC-FIFO
                  * **/
-                if (CombinationCost(Combination) > BSSF.Cost)
+                if (CombinationCost(pos) >= BSSF.Cost)
                     return;
                 else
                 {
@@ -78,7 +93,7 @@ namespace GeneticFilmPlanification
                     List<Scene> aux = ShallowClone(scenes);
                     aux.Remove(s);
                     PrintCombination(this.Combination);
-                    MakeCombination(aux);
+                    MakeCombination(aux, BSSF, pos);
                 }
             }
         }
@@ -93,24 +108,24 @@ namespace GeneticFilmPlanification
         /// Creará una nueva mejor solución (calendario)
         /// </summary>
         /// <param name="scenes"></param>
-        private void MakeNewBSSF(List<Scene> scenes)
+        private void MakeNewBSSF(List<Scene> scenes, FilmingCalendar BSSF, int position)
         {
-            this.BSSF.Scenes = scenes;
-            this.BSSF.Cost = FilmingCalendar.CalendarCost(scenes);
+            BSSF.Scenes = scenes;
+            BSSF.Cost = CombinationCost(position);
         }
 
-        private int CombinationCost(List<Scene> scenes)
+        private int CombinationCost(int position)
         {
-            int cost = FilmingCalendar.CalendarCost(scenes);
+            int cost = Data.calculatePriceOfCalendar(position, Movie.GetInstance().Scenarios[position].Days);
             Console.WriteLine("COSTO COMBINACION: " + cost);
             return cost;
         }
 
-        private void PrintCombination(List<Scene> scences)
+        private void PrintCombination(List<Scene> scenes)
         {
             Console.WriteLine("######### COMBINACIÓN #########");
             String c = "";
-            foreach (Scene s in scences)
+            foreach (Scene s in scenes)
                 c += s.Location.ID + "-";
             Console.WriteLine(c);
         }

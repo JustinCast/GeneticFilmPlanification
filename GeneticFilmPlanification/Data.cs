@@ -641,7 +641,7 @@ namespace GeneticFilmPlanification
             }  
         }
 
-        public static int calculatePriceOfCalendar(int positionScenario,List<Day> days) {// calcula el precio total del calendario en los dias 
+        public static int calculatePriceOfCalendar(int positionScenario, List<Day> days) {// calcula el precio total del calendario en los dias 
             int totalPrice = 0;
             List<Actor> actors = movie.Scenarios[positionScenario].Actors;
             int firstParticipation = 0;
