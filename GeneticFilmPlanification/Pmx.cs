@@ -34,7 +34,8 @@ namespace GeneticFilmPlanification
                     }
                     break;
                 }
-                if (count==sonCalendar.Scenes.Count) {
+                if (count== sonCalendar.Scenes.Count) {
+
                     return scene;
                 }
                 count = 0;
@@ -42,18 +43,37 @@ namespace GeneticFilmPlanification
             return null;
         }
 
-        public static FilmingCalendar changeScenes(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar)
+
+
+        public static FilmingCalendar changeScenes(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar, int end)
         {
+            List<string> idScenes = new List<string>();
+            List<string> idScenes2 = new List<string>();
             FilmingCalendar newSonCalendar = new FilmingCalendar();
+            for (int i = end;i< sonCalendar.Scenes.Count;i++) {
+                idScenes2.Add(sonCalendar.Scenes[i].id);
+            }
             for (int i=0; i< sonCalendar.Scenes.Count;i++) {
                 Scene scene = sonCalendar.Scenes[i];
                 if (scene.marked == true && scene.id.Equals("0"))
                 {
-                    newSonCalendar.Scenes.Add(sceneToChange(fatherCalendar, sonCalendar));
+                    foreach (Scene auxScene in fatherCalendar.Scenes)
+                    {
+                        bool exists = idScenes.Contains(auxScene.id);
+                        bool exists2 = idScenes2.Contains(auxScene.id);
+                        if (exists == false && exists2==false)
+                        {
+                            newSonCalendar.Scenes.Add(auxScene);
+                            idScenes.Add(auxScene.id);
+                            break;
+                        }
+                    }
                 }
-                else newSonCalendar.Scenes.Add(scene);
+                else {
+                    idScenes.Add(scene.id);
+                    newSonCalendar.Scenes.Add(scene);
+                }   
             }
-
             for (int r = 0; r < fatherCalendar.Scenes.Count; r++)
             {
                 Console.WriteLine(fatherCalendar.Scenes[r].id + " ...." + newSonCalendar.Scenes[r].id);
@@ -98,7 +118,7 @@ namespace GeneticFilmPlanification
                 descendent2 = createSonChromosome(size, start, end, chromosome2);
 
                 //FilmingCalendar newDesendent1 = changeScenes(chromosome2, descendent1);
-                FilmingCalendar newDesendent2 = changeScenes(chromosome1, descendent2);
+                FilmingCalendar newDesendent2 = changeScenes(chromosome1, descendent2,end);
 
                 //accommodateScenesInDays(newDesendent1, positionScenario);
                 accommodateScenesInDays(newDesendent2, positionScenario);
