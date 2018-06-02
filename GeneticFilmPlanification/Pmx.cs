@@ -21,85 +21,89 @@ namespace GeneticFilmPlanification
             }
             return newCalendar;
         }
-        public static bool verifyIfExists(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar) {
-            Console.WriteLine("numero de scenas father: "+fatherCalendar.Scenes.Count);
-            Console.WriteLine("numero de scenas son: " + sonCalendar.Scenes.Count);
-            foreach (Scene scene1 in fatherCalendar.Scenes) {
-                foreach (Scene scene2 in sonCalendar.Scenes) {
-                    Console.WriteLine("scene id: "+scene1.id+"  scene id: "+scene2.id);
-                    if (scene1.id.Equals(scene2.id)) {
-                        return true;
+
+        public static Scene sceneToChange(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar) {
+            int count = 0;
+            foreach (Scene scene in fatherCalendar.Scenes) {
+                foreach (Scene auxScene in sonCalendar.Scenes)
+                {
+                    if (!scene.id.Equals(auxScene.id))
+                    {
+                        count ++;
+                        continue;
                     }
+                    break;
                 }
+                if (count==sonCalendar.Scenes.Count) {
+                    return scene;
+                }
+                count = 0;
             }
-            return false;
-        }    
+            return null;
+        }
 
         public static FilmingCalendar changeScenes(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar)
         {
-            for (int n = 0; n < sonCalendar.Scenes.Count; n++)
-            {// recorre las escenas del desenciente hasta encontrar una que este marcada como true 
-                if (sonCalendar.Scenes[n].marked == true)
+            FilmingCalendar newSonCalendar = new FilmingCalendar();
+            for (int i=0; i< sonCalendar.Scenes.Count;i++) {
+                Scene scene = sonCalendar.Scenes[i];
+                if (scene.marked == true && scene.id.Equals("0"))
                 {
-                    for (int k = 0; k < fatherCalendar.Scenes.Count; k++)
-                    {
-                        bool exists = verifyIfExists(fatherCalendar, sonCalendar);// verifica si existe la escena del padre en el hijo
-                        Console.WriteLine("Estos son los exists "+exists);
-                        if (exists == false)
-                        {
-                            sonCalendar.Scenes[n].marked = false;
-                            sonCalendar.Scenes[n] = fatherCalendar.Scenes[k];// se le asigna a la escena que estaba en null la escena que no se encuentra en ese calendario aún
-                        }
-                    }                   
+                    newSonCalendar.Scenes.Add(sceneToChange(fatherCalendar, sonCalendar));
                 }
-            } 
+                else newSonCalendar.Scenes.Add(scene);
+            }
+
+            for (int r = 0; r < fatherCalendar.Scenes.Count; r++)
+            {
+                Console.WriteLine(fatherCalendar.Scenes[r].id + " ...." + newSonCalendar.Scenes[r].id);
+            }
+            return newSonCalendar;
+        }
+
+        public static FilmingCalendar createSonChromosome(int size, int start, int end, FilmingCalendar chromosome ) {
+            FilmingCalendar sonCalendar = new FilmingCalendar();
+            foreach (Scene scene in chromosome.Scenes) {
+                int index = chromosome.Scenes.IndexOf(scene);
+                if (index > start && index < end && scene.marked == false) {
+                    Scene newScene = new Scene();
+                    newScene.id = "0";
+                    newScene.marked = true;
+                    sonCalendar.Scenes.Add(newScene);
+                    continue;
+                }
+                else sonCalendar.Scenes.Add(scene);
+            }
             return sonCalendar;
         }
 
         public static void performCrossingPMX(int positionScenario)
-        {// Se realiza el cruce de las escenas 
-            FilmingCalendar chromosome1;   // Recalcar este metodo crea dos descendientes a la vez
-            FilmingCalendar chromosome2;
-            chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0];
-            
-            chromosome2 = generateChromosome(chromosome1);
+        {// Se realiza el cruce de las escenas  Recalcar este metodo crea dos descendientes a la vez
+            FilmingCalendar chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0];
+            FilmingCalendar chromosome2 = generateChromosome(chromosome1);
             int size = movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes.Count;
             int start = (size - size / 2) / 2;
             int end = (size - start) - 1;
+            Console.WriteLine("cantidad de elementos "+chromosome1.Scenes.Count);
             Console.WriteLine("start "+ start);
             Console.WriteLine("end " + end );
             FilmingCalendar descendent1;
             FilmingCalendar descendent2;
+
             for (int i = 0; i <1; i++)
             { // El cruce se realizará la cantidad de veces que se ejecute este for 
-                descendent1 = chromosome1;
-                descendent2 = chromosome2;
-                for (int j = 0; j < size; j++)
-                {// for que se encarga de poner en null a las escenas que se encuentren en el rango establecido de los futuros descendientes
-                    if (descendent1.Scenes.IndexOf(descendent1.Scenes[j]) > start &&
-                        descendent1.Scenes.IndexOf(descendent1.Scenes[j]) < end && descendent1.Scenes[j].marked==false)
-                    {
-                        
-                        descendent1.Scenes[j].marked = true;
-                        descendent1.Scenes[j].id = "0";
+              //descendent1 = chromosome1;
+              //descendent2 = chromosome2;
+                descendent1 = createSonChromosome(size,start,end,chromosome1);
+                descendent2 = createSonChromosome(size, start, end, chromosome2);
 
-                    }
-                    Console.WriteLine("Marcado en la posicion " + j + "........" + descendent1.Scenes[j].marked+" shedule"+ descendent1.Scenes[j].Schedule);
-                    if (descendent2.Scenes.IndexOf(descendent2.Scenes[j]) > start &&
-                        descendent2.Scenes.IndexOf(descendent2.Scenes[j]) < end && descendent1.Scenes[j].marked == false)
-                    {
-                        descendent2.Scenes[j].marked = true;
-                        descendent2.Scenes[j].id = "0";
-                    }
-                }
-
-                FilmingCalendar newDesendent1 = changeScenes(chromosome2, descendent1);
+                //FilmingCalendar newDesendent1 = changeScenes(chromosome2, descendent1);
                 FilmingCalendar newDesendent2 = changeScenes(chromosome1, descendent2);
 
-                accommodateScenesInDays(newDesendent1, positionScenario);
+                //accommodateScenesInDays(newDesendent1, positionScenario);
                 accommodateScenesInDays(newDesendent2, positionScenario);
-                chromosome1 = newDesendent1;
-                chromosome2 = newDesendent2;
+                //chromosome1 = newDesendent1;
+                //chromosome2 = newDesendent2;
             }
         }
 
