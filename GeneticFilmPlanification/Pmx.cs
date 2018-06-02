@@ -16,9 +16,7 @@ namespace GeneticFilmPlanification
             FilmingCalendar currentCalendar = calendar;
             FilmingCalendar newCalendar = new FilmingCalendar();
             for (int i = currentCalendar.Scenes.Count - 1; i >= 0; i--)
-            {
                 newCalendar.Scenes.Add(currentCalendar.Scenes[i]);
-            }
             return newCalendar;
         }
 
@@ -34,10 +32,8 @@ namespace GeneticFilmPlanification
                     }
                     break;
                 }
-                if (count== sonCalendar.Scenes.Count) {
-
+                if (count== sonCalendar.Scenes.Count) 
                     return scene;
-                }
                 count = 0;
             }
             return null;
@@ -74,10 +70,6 @@ namespace GeneticFilmPlanification
                     newSonCalendar.Scenes.Add(scene);
                 }   
             }
-            for (int r = 0; r < fatherCalendar.Scenes.Count; r++)
-            {
-                Console.WriteLine(fatherCalendar.Scenes[r].id + " ...." + newSonCalendar.Scenes[r].id);
-            }
             return newSonCalendar;
         }
 
@@ -97,33 +89,39 @@ namespace GeneticFilmPlanification
             return sonCalendar;
         }
 
+        
         public static void performCrossingPMX(int positionScenario)
         {// Se realiza el cruce de las escenas  Recalcar este metodo crea dos descendientes a la vez
-            FilmingCalendar chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0];
-            FilmingCalendar chromosome2 = generateChromosome(chromosome1);
+            
             int size = movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes.Count;
             int start = (size - size / 2) / 2;
             int end = (size - start) - 1;
-            Console.WriteLine("cantidad de elementos "+chromosome1.Scenes.Count);
+            //Console.WriteLine("cantidad de elementos "+chromosome1.Scenes.Count);
             Console.WriteLine("start "+ start);
             Console.WriteLine("end " + end );
             FilmingCalendar descendent1;
             FilmingCalendar descendent2;
 
-            for (int i = 0; i <1; i++)
+            for (int i = 0; i <2; i++)
             { // El cruce se realizará la cantidad de veces que se ejecute este for 
-              //descendent1 = chromosome1;
-              //descendent2 = chromosome2;
+                FilmingCalendar chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0];
+                FilmingCalendar chromosome2 = generateChromosome(chromosome1);
+
                 descendent1 = createSonChromosome(size,start,end,chromosome1);
                 descendent2 = createSonChromosome(size, start, end, chromosome2);
 
-                //FilmingCalendar newDesendent1 = changeScenes(chromosome2, descendent1);
+                FilmingCalendar newDesendent1 = changeScenes(chromosome2, descendent1,end);
                 FilmingCalendar newDesendent2 = changeScenes(chromosome1, descendent2,end);
-
-                //accommodateScenesInDays(newDesendent1, positionScenario);
+                accommodateScenesInDays(newDesendent1, positionScenario);
                 accommodateScenesInDays(newDesendent2, positionScenario);
-                //chromosome1 = newDesendent1;
-                //chromosome2 = newDesendent2;
+
+                /*for (int j=0;j<newDesendent1.Scenes.Count;j++) {
+                    Console.WriteLine(chromosome1.Scenes[j].id+"........"+ chromosome2.Scenes[j].id);
+                }
+                Console.WriteLine("-------------------------------------------------------------");
+                */
+                chromosome1 = newDesendent1;
+                chromosome2 = newDesendent2;
             }
         }
 
@@ -203,7 +201,7 @@ namespace GeneticFilmPlanification
         public static List<Day> createListWithDays(FilmingCalendar calendar)
         {
             List<Day> newDays = new List<Day>();
-            for (int i = 1; i <= calendar.Scenes.Count; i++)// se crean los dias para asignarle las escenas que ya fueron cruzdas  
+            for (int i = 1; i <= calendar.Scenes.Count+4; i++)// se crean los dias para asignarle las escenas que ya fueron cruzdas  
             {
                 Day newDay = new Day();
                 newDay.DayNumber = i;
@@ -226,7 +224,6 @@ namespace GeneticFilmPlanification
             {
                 foreach (Scene scene in calendar.Scenes)
                 {
-
                     if (scene.Schedule == true)
                     {
                         int space = availableSpace(day.DayTime);// obtiene espacio disponible 
@@ -234,9 +231,7 @@ namespace GeneticFilmPlanification
                         {
                             bool can1 = canAssignedToActor(day, newDays, scene);// validar si los actores no estan el dia anterior en la jornada contraria 
                             if (can1 == true)
-                            {
-                                day.DayTime.Scenes.Add(scene);
-                            }
+                                day.DayTime.Scenes.Add(scene);   
                         }
                     }
                     if (scene.Schedule == false)
@@ -246,11 +241,8 @@ namespace GeneticFilmPlanification
                         {
                             bool can2 = canAssignedToActor(day, newDays, scene);// validar si los actores no estan el dia anterior en la jornada contraria 
                             if (can2 == true)
-                            {
                                 day.NightTime.Scenes.Add(scene);
-                            }
                         }
-
                     }
                 }
             }
