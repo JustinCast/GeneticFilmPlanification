@@ -32,6 +32,7 @@ namespace GeneticFilmPlanification
 
             BranchAndBound BB = new BranchAndBound(movie.Scenarios, movie);
             BB.RunBB();
+            BB.PrintCostComparison();
 
             Console.ReadKey();
         }
