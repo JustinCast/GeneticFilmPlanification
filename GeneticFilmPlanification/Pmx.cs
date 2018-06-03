@@ -265,15 +265,37 @@ namespace GeneticFilmPlanification
             }
         }
 
+        public static FilmingCalendar createSonChromosomeOX(int size, int start, int end, FilmingCalendar chromosome)
+        {
+            FilmingCalendar sonCalendar = new FilmingCalendar(); countA += 1;
+            foreach (Scene scene in chromosome.Scenes)
+            {
+                int index = chromosome.Scenes.IndexOf(scene); countA += 1;
+                if (index > start && index < end && scene.marked == false)
+                {
+                    countC += 3;
+                    Scene newScene = new Scene(); countA += 1;
+                    newScene.id = "0"; countA += 1;
+                    newScene.marked = true; countA += 1;
+                    sonCalendar.Scenes.Add(newScene);
+                    continue;
+                }
+                else sonCalendar.Scenes.Add(scene);
+            }
+            return sonCalendar;
+        }
+
         public static void performCrossingOX(int positionScenario)
         {// Se realiza el cruce de las escenas  Recalcar este metodo crea dos descendientes a la vez
 
             int size = movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes.Count; countA += 1;
-            int start = (size - size / 2) / 2; countA += 1;
-            int end = (size - start) - 1; countA += 1;
+            int start1 = (size - size / 2) / 2; countA += 1;
+            int end1;
+            int start2;
+            int end2 = (size - start1) - 1; countA += 1;
             //Console.WriteLine("cantidad de elementos "+chromosome1.Scenes.Count);
-            Console.WriteLine("start " + start);
-            Console.WriteLine("end " + end);
+            //Console.WriteLine("start " + start);
+            //Console.WriteLine("end " + end);
             FilmingCalendar descendent1;
             FilmingCalendar descendent2;
 
