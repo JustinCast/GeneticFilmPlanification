@@ -27,7 +27,8 @@ namespace GeneticFilmPlanification
             Data.assignLocationsToDay();
 
             Data.performPmxInAllScenarios();
-
+            Pmx.clearLists();
+            Pmx.performOxInAllScenarios();
             //int coste=Data.calculatePriceOfCalendar(movie,0,movie.Scenarios[0].FilmingCalendars[0]);
 
             Console.ReadKey();

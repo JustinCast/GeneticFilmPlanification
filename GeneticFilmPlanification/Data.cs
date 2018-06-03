@@ -705,6 +705,9 @@ namespace GeneticFilmPlanification
         }
 
         public static void performPmxInAllScenarios() {
+            Console.WriteLine("-----------------------------------------------------------------------------------------");
+            Console.WriteLine("                            Algoritmo genetico PMX");
+            Console.WriteLine("-----------------------------------------------------------------------------------------");
             for (int i= 0;i < 4; i++) {
                 Pmx.performCrossingPMX(i);// posicion del escenario
                 int numberOfScenario = i + 1;      
