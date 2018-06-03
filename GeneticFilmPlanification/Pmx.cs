@@ -304,8 +304,8 @@ namespace GeneticFilmPlanification
                 FilmingCalendar chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0]; countA += 1;
                 FilmingCalendar chromosome2 = generateChromosome(chromosome1); countA += 1;
 
-                descendent1 = createSonChromosome(size, start, end, chromosome1); countA += 1;
-                descendent2 = createSonChromosome(size, start, end, chromosome2); countA += 1;
+                //descendent1 = createSonChromosome(size, start, end, chromosome1); countA += 1;
+                //descendent2 = createSonChromosome(size, start, end, chromosome2); countA += 1;
 
                 //FilmingCalendar newDesendent1 = changeScenes(chromosome2, descendent1, end); countA += 1;
                 //FilmingCalendar newDesendent2 = changeScenes(chromosome1, descendent2, end); countA += 1;

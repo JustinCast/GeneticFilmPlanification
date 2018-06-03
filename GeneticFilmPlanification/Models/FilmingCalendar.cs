@@ -22,7 +22,7 @@ namespace GeneticFilmPlanification.Models
 
 
         /// <summary>
-        /// Calcula el costo total del calendario
+        /// Calcula el costo total del calendario para el Algoritmo B&B
         /// </summary>
         /// <returns>Costo total del calendario</returns>
         public static int CalendarCost(List<Scene> scenes)

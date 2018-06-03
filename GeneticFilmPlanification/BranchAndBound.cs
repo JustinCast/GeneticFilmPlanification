@@ -22,6 +22,7 @@ namespace GeneticFilmPlanification
         private FilmingCalendar BSSF2;
         private FilmingCalendar BSSF3;
         private FilmingCalendar BSSF4;
+        private int InitialCost1, InitialCost2, InitialCost3, InitialCost4;
         /// <summary>
         /// en esta lista se guarda el orden de la combinacion
         /// Cuando la recursividad retorne, se podrá calcular el costo de esa combinacion
@@ -31,17 +32,21 @@ namespace GeneticFilmPlanification
         {
             // seteo por defecto de las mejores soluciones para cada escenario
             this.BSSF1 = scenarios.ElementAt(0).FilmingCalendars.ElementAt(0);
-            this.BSSF1.Cost = 10000;
-            Console.WriteLine("Costo original escenario 1: " + this.BSSF1.Cost);
+            this.BSSF1.Cost = CombinationCost(0);
+            InitialCost1 = BSSF1.Cost;
+            
             this.BSSF2 = scenarios.ElementAt(1).FilmingCalendars.ElementAt(0);
-            this.BSSF2.Cost = 10000;
-            Console.WriteLine("Costo original escenario 2: " + this.BSSF2.Cost);
+            this.BSSF2.Cost = CombinationCost(1);
+            InitialCost2 = BSSF2.Cost;
+            
             this.BSSF3 = scenarios.ElementAt(2).FilmingCalendars.ElementAt(0);
             this.BSSF3.Cost = CombinationCost(2);
-            Console.WriteLine("Costo original escenario 3: " + this.BSSF3.Cost);
+            InitialCost3 = BSSF3.Cost;
+            
             this.BSSF4 = scenarios.ElementAt(3).FilmingCalendars.ElementAt(0);
             this.BSSF4.Cost = CombinationCost(3);
-            Console.WriteLine("Costo original escenario 4: " + this.BSSF4.Cost);
+            InitialCost4 = BSSF4.Cost;
+
             // inicialización de datos para el algoritmo
             this.Scenario1Calendars.Add(scenarios[0].FilmingCalendars.ElementAt(0));
             this.Scenario2Calendars.Add(scenarios[1].FilmingCalendars.ElementAt(0));
@@ -119,7 +124,7 @@ namespace GeneticFilmPlanification
 
         private int CombinationCost(int position)
         {
-            int cost = Data.calculatePriceOfCalendar(position, Movie.GetInstance().Scenarios[position].Days);
+            int cost = FilmingCalendar.CalendarCost();
             Console.WriteLine("COSTO COMBINACION: " + cost);
             return cost;
         }
@@ -135,11 +140,19 @@ namespace GeneticFilmPlanification
 
         public void PrintCostComparison()
         {
-            Console.WriteLine("##############################################");
-            Console.WriteLine("Costo final Calendario 1: " + BSSF1.Cost);
-            Console.WriteLine("Costo final Calendario 2: " + BSSF2.Cost);
-            Console.WriteLine("Costo final Calendario 3: " + BSSF3.Cost);
-            Console.WriteLine("Costo final Calendario 4: " + BSSF4.Cost);
+            Console.WriteLine("________________________________________");
+            Console.WriteLine("Costo INICIAL Calendario 1: " + InitialCost1);
+            Console.WriteLine("Costo FINAL Calendario 1: " + BSSF1.Cost);
+            Console.WriteLine("________________________________________");
+            Console.WriteLine("Costo INICIAL Calendario 2: " + InitialCost2);
+            Console.WriteLine("Costo FINAL Calendario 2: " + BSSF2.Cost);
+            Console.WriteLine("________________________________________");
+            Console.WriteLine("Costo INICIAL Calendario 3: " + InitialCost3);
+            Console.WriteLine("Costo FINAL Calendario 3: " + BSSF3.Cost);
+            Console.WriteLine("________________________________________");
+            Console.WriteLine("Costo INICIAL Calendario 4: " + InitialCost4);
+            Console.WriteLine("Costo FINAL Calendario 4: " + BSSF4.Cost);
+            Console.WriteLine("________________________________________");
         }
 
         /// <summary>

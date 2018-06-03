@@ -31,6 +31,8 @@ namespace GeneticFilmPlanification
             Pmx.performOxInAllScenarios();
             //int coste=Data.calculatePriceOfCalendar(movie,0,movie.Scenarios[0].FilmingCalendars[0]);
 
+            Console.WriteLine("\n\n\n\n");
+            Console.WriteLine("_____________________________________________ BRANCH AND BOUND ALGORITHM _____________________________________________\n");
             BranchAndBound BB = new BranchAndBound(movie.Scenarios, movie);
             BB.RunBB();
             BB.PrintCostComparison();
