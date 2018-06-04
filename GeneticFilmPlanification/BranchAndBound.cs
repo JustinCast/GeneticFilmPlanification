@@ -29,6 +29,7 @@ namespace GeneticFilmPlanification
         /// Cuando la recursividad retorne, se podrá calcular el costo de esa combinacion
         /// </summary>
         private List<Scene> Combination = new List<Scene>();
+        private bool FirstTime = true;
         #endregion
 
         #region seteo o configuración del algoritmo
@@ -36,19 +37,19 @@ namespace GeneticFilmPlanification
         {
             // seteo por defecto de las mejores soluciones para cada escenario
             this.BSSF1 = scenarios.ElementAt(0).FilmingCalendars.ElementAt(0);
-            this.BSSF1.Cost = CalendarCost(BSSF1.Scenes);
+            this.BSSF1.Cost = Data.calculatePriceOfCalendar(0, Movie.GetInstance().Scenarios[0].Days);
             InitialCost1 = BSSF1.Cost;
             
             this.BSSF2 = scenarios.ElementAt(1).FilmingCalendars.ElementAt(0);
-            this.BSSF2.Cost = CalendarCost(BSSF2.Scenes); ;
+            this.BSSF2.Cost = Data.calculatePriceOfCalendar(1, Movie.GetInstance().Scenarios[1].Days);
             InitialCost2 = BSSF2.Cost;
             
             this.BSSF3 = scenarios.ElementAt(2).FilmingCalendars.ElementAt(0);
-            this.BSSF3.Cost = CalendarCost(BSSF3.Scenes); ;
+            this.BSSF3.Cost = Data.calculatePriceOfCalendar(2, Movie.GetInstance().Scenarios[2].Days);
             InitialCost3 = BSSF3.Cost;
             
             this.BSSF4 = scenarios.ElementAt(3).FilmingCalendars.ElementAt(0);
-            this.BSSF4.Cost = CalendarCost(BSSF4.Scenes); ;
+            this.BSSF4.Cost = Data.calculatePriceOfCalendar(3, Movie.GetInstance().Scenarios[3].Days);
             InitialCost4 = BSSF4.Cost;
 
             // inicialización de datos para el algoritmo
@@ -68,12 +69,15 @@ namespace GeneticFilmPlanification
             this.Combination = this.ShallowClone(this.Scenario1Calendars.ElementAt(0).Scenes);
             MakeCombination(this.Scenario1Calendars.ElementAt(0).Scenes, BSSF1, 0);
             // Escenario 2
+            FirstTime = true;
             this.Combination = this.ShallowClone(this.Scenario2Calendars.ElementAt(0).Scenes);
             MakeCombination(this.Scenario2Calendars.ElementAt(0).Scenes, BSSF2, 1);
             // Escenario 3
+            FirstTime = true;
             this.Combination = this.ShallowClone(this.Scenario3Calendars.ElementAt(0).Scenes);
             MakeCombination(this.Scenario3Calendars.ElementAt(0).Scenes, BSSF3, 2);
             // Escenario 4
+            FirstTime = true;
             this.Combination = this.ShallowClone(this.Scenario4Calendars.ElementAt(0).Scenes);
             MakeCombination(this.Scenario4Calendars.ElementAt(0).Scenes, BSSF4, 3);
             //this.CurrentFilmingCalendarID = this.FilmingCalendars.ElementAt(i).AssignedScenario;
@@ -88,8 +92,8 @@ namespace GeneticFilmPlanification
                     if (CombinationCost(Combination, pos) < BSSF.Cost)
                         MakeNewBSSF(Combination, BSSF, pos);
                 // limpia la lista para que guarde una nueva combinacion
-                this.Combination.Clear();
-                return;
+                //this.Combination.Clear();
+                //return;
             }
             foreach(Scene s in scenes)
             {
@@ -98,17 +102,18 @@ namespace GeneticFilmPlanification
                  * solución actual, no tiene sentido seguir combinando
                  * IMPLEMENTACION LC-FIFO
                  * **/
-                if (CombinationCost(Combination, pos) >= BSSF.Cost)
-                    return;
-                else
-                {
-                    // se quita la escena del inicio y se agrega al final
-                    this.Combination.Remove(s); this.Combination.Add(s);
-                    List<Scene> aux = ShallowClone(scenes);
-                    aux.Remove(s);
-                    PrintCombination(this.Combination);
-                    MakeCombination(aux, BSSF, pos);
-                }
+                if (!FirstTime)
+                    if (CombinationCost(Combination, pos) >= BSSF.Cost)
+                        return; //poda
+                
+                FirstTime = false;
+                // se quita la escena del inicio y se agrega al final
+                this.Combination.Remove(s); this.Combination.Add(s);
+                List<Scene> aux = ShallowClone(scenes);
+                aux.Remove(s);
+                PrintCombination(this.Combination);
+                MakeCombination(aux, BSSF, pos);
+                
             }
         }
         #endregion
