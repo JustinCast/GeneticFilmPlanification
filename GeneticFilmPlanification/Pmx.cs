@@ -9,7 +9,7 @@ namespace GeneticFilmPlanification
 {
     class Pmx
     {
-        static int countC, countA,countL = 0;// contador de comparaciones, asignaciones y lineas ejecutdas
+        public static int countC, countA,countL = 0;// contador de comparaciones, asignaciones y lineas ejecutdas
         static Movie movie = Movie.GetInstance();
         /*------------------------------------------------------------------------------------------------------------------------------
                                                   ALGORITMO GENETICO PMX
@@ -17,36 +17,39 @@ namespace GeneticFilmPlanification
         */
         public static FilmingCalendar generateChromosome(FilmingCalendar calendar)
         {// Se recorre las escenas de un calendario y se le van agregando inversamente a otro
-            FilmingCalendar currentCalendar = calendar; countA += 1; countL += 1;
-            FilmingCalendar newCalendar = new FilmingCalendar(); countA += 1; countL += 1;
+            FilmingCalendar currentCalendar = calendar;
+            FilmingCalendar newCalendar = new FilmingCalendar();
+            countA += 3; countL += 3;
             for (int i = currentCalendar.Scenes.Count - 1; i >= 0; i--) {
-                newCalendar.Scenes.Add(currentCalendar.Scenes[i]); countL += 2;
+                countA += 1; countC += 2;
+                newCalendar.Scenes.Add(currentCalendar.Scenes[i]); countA += 1; countL += 2;
             }
-            countL += 1;
+            countC += 2; countL += 2;
             return newCalendar; 
         }
 
         public static Scene sceneToChange(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar) {
-            int count = 0; countA += 1; countL += 1;
+            int count = 0; 
+            countA += 2; countL += 2;
             foreach (Scene scene in fatherCalendar.Scenes) {
-                countL += 1;
+                countL += 1; countA += 2;
                 foreach (Scene auxScene in sonCalendar.Scenes)
                 {
-                    countC += 1; countL += 2;
+                    countC += 1; countL += 2; countA += 1;
                     if (!scene.id.Equals(auxScene.id)) 
                     {
                         count ++; countA += 1; countL += 2;
                         continue;
                     }   
                 }
-                countC += 1; countL += 1;
+                countC += 1; countL += 2;
                 if (count == sonCalendar.Scenes.Count) {
                     countL += 1;
                     return scene;
                 }
                 count = 0; countA += 1; countL += 1;
             }
-            countL += 1;
+            countL += 2;
             return null;
         }
 
@@ -55,51 +58,54 @@ namespace GeneticFilmPlanification
             List<string> idScenes = new List<string>(); 
             List<string> idScenes2 = new List<string>(); 
             FilmingCalendar newSonCalendar = new FilmingCalendar();
-            countA += 3; countL += 3;
+            countA += 4; countL += 4;
             for (int i = end;i< sonCalendar.Scenes.Count;i++) 
-                idScenes2.Add(sonCalendar.Scenes[i].id); countL += 2;
+                idScenes2.Add(sonCalendar.Scenes[i].id); countA += 2; countL += 2; countC += 1;
+            countA += 1; countC += 1; countL += 1;
             for (int i=0; i< sonCalendar.Scenes.Count;i++) {
-                Scene scene = sonCalendar.Scenes[i];  countA += 1; countL += 2;
-                countC += 3; countL += 1;
-                if (scene.marked == true && scene.id.Equals("0")) {  
+                Scene scene = sonCalendar.Scenes[i];  countA += 2; countL += 2;
+                countC += 4; countL += 1;
+                if (scene.marked == true && scene.id.Equals("0")) {
+                    countA += 1;
                     foreach (Scene auxScene in fatherCalendar.Scenes)
                     {
-                        countL += 1;
+                        countL += 1; countA += 1;
                         bool exists = idScenes.Contains(auxScene.id); countA += 1; countL += 1;
                         bool exists2 = idScenes2.Contains(auxScene.id); countA += 1; countL += 1;
                         countC += 3; countL += 1;
                         if (exists == false && exists2==false){ 
-                            newSonCalendar.Scenes.Add(auxScene); countL += 1;
-                            idScenes.Add(auxScene.id); countL += 2;
+                            newSonCalendar.Scenes.Add(auxScene); countA += 1; countL += 1;
+                            idScenes.Add(auxScene.id); countA += 1; countL += 2;
                             break;
                         }
                     }
+                    countL += 1;
                 }
                 else {
-                    idScenes.Add(scene.id); countL += 1;
-                    newSonCalendar.Scenes.Add(scene); countL += 1;
+                    idScenes.Add(scene.id); countA += 1; countL += 1;
+                    newSonCalendar.Scenes.Add(scene); countA += 1; countL += 1;
                 }   
             }
-            countL += 1;
+            countL += 2; countC += 1;
             return newSonCalendar;
         }
 
         public static FilmingCalendar createSonChromosome(int size, int start, int end, FilmingCalendar chromosome ) {
-            FilmingCalendar sonCalendar = new FilmingCalendar(); countA += 1; countL += 1;
+            FilmingCalendar sonCalendar = new FilmingCalendar(); countA += 2; countL += 2;
             foreach (Scene scene in chromosome.Scenes) {
-                int index = chromosome.Scenes.IndexOf(scene); countA += 1; countL += 2;
+                int index = chromosome.Scenes.IndexOf(scene); countA += 2; countL += 2;
                 countC += 5; countL += 1;
                 if (index > start && index < end && scene.marked == false) { 
                     Scene newScene = new Scene();
                     newScene.id = "0";
                     newScene.marked = true;
                     countA += 3; countL += 3;
-                    sonCalendar.Scenes.Add(newScene); countL += 2;
+                    sonCalendar.Scenes.Add(newScene); countA += 1; countL += 2;
                     continue;
                 }
-                else sonCalendar.Scenes.Add(scene); countL += 1;
+                else sonCalendar.Scenes.Add(scene); countA += 1; countL += 1;
             }
-            countL += 1;
+            countL += 2;
             return sonCalendar;
         }
 
@@ -111,9 +117,10 @@ namespace GeneticFilmPlanification
             int end = (size - start) - 1; 
             FilmingCalendar descendent1; 
             FilmingCalendar descendent2; 
-            countA += 3; countL += 5;
+            countA += 4; countL += 6;
             for (int i = 0; i <1; i++)
             { // El cruce se realizará la cantidad de veces que se ejecute este for 
+                countA += 1; countC += 1;
                 FilmingCalendar chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0];
                 FilmingCalendar chromosome2 = generateChromosome(chromosome1);
                 descendent1 = createSonChromosome(size,start,end,chromosome1); 
@@ -126,52 +133,56 @@ namespace GeneticFilmPlanification
                 chromosome2 = newDesendent2;
                 countA += 8; countL += 10;
             }
+            countL += 1; countC += 1;
         }
 
         public static List<Day> chooseTheBestCalendar(int positionScenario)
         {
             List<Day> bestList = movie.Scenarios[positionScenario].Days; 
             int totalcost = Data.calculatePriceOfCalendar(positionScenario, movie.Scenarios[positionScenario].Days);
-            countA += 2; countL += 2;
+            countA += 2; countL += 3;
+            countA += 1;
             foreach (List<Day> days in movie.Scenarios[positionScenario].possibleDays)
             {
+                countA += 1;
                 int cost = Data.calculatePriceOfCalendar(positionScenario, days); countA += 1; countL += 2;
                 countC += 1; countL += 1;
                 if (cost < totalcost){            
-                    bestList = days; countA += 1; countL += 1;
-                    totalcost = cost; countA += 1; countL += 1;
+                    bestList = days;
+                    totalcost = cost;
+                    countA += 2; countL += 2;
                 }
             }
-            countL += 1;
+            countL += 2;
             return bestList;
         }
 
         public static int availableSpace(Time Shedule)
         {// retorna cuanto espacio tiene la jornada segun sus paginas 
-            int space = 0; countA += 1; countL += 1;
+            int space = 0; countA += 2; countL += 2;
             foreach (Scene scene in Shedule.Scenes)    
-                space += scene.Pages; countA += 1; countL += 2;
-            countL += 1;
+                space += scene.Pages; countA += 2; countL += 2;
+            countL += 2; 
             return Shedule.MaximunScriptPages - space;// Se le resta el espacio tatal al que ya posee, para obtener el que esta disponible 
         }
 
         public static bool canAssignedToActor(Day currentDay, List<Day> newDays, Scene scene)
         {// verifica el respeto de las horas a lavorar de cada actor 
-            Day before; countL += 1;
-            countC += 1;
+            Day before; countL += 2;countC += 1;
             if (newDays.IndexOf(currentDay) != 0){  //contexto de jornada de dia 
                 before = newDays.ElementAt(newDays.IndexOf(currentDay) - 1); countA += 1; countL += 2; // el dia anterior 
                 countC += 1; countL += 1;
                 if (scene.Schedule == true){  // si la escena se realiza en el dia 
+                    countA += 1;
                     foreach (Scene auxScene in before.NightTime.Scenes)
                     {
-                        countL += 1;
+                        countL += 1; countA += 2;
                         foreach (Actor actor in auxScene.Actors)// recorre los actores del dia anterior
                         {
-                            countL += 1;
+                            countL += 1; countA += 2;
                             foreach (Actor auxActor in scene.Actors)// recorre los actores de la escena actual, la que se desea agregar
                             {
-                                countC += 1; countL += 1;
+                                countC += 1; countL += 1; countA += 1;
                                 if (actor.ID.Equals(auxActor.ID)) {
                                     countL += 1;
                                     continue;
@@ -179,17 +190,21 @@ namespace GeneticFilmPlanification
                                 countL += 1;
                                 return false;
                             }
+                            countL += 1;
                         }
+                        countL += 1;
                     }
+                    countL += 1;
                 }
                 countC += 1; countL += 1;
                 if (scene.Schedule == false){ // si la escena se realiza en la noche 
+                    countA += 1;
                     foreach (Scene auxScene in before.DayTime.Scenes)
                     {
-                        countL += 1;
+                        countL += 1; countA += 2;
                         foreach (Actor actor in auxScene.Actors)
                         {// recorre los actores del dia anterior 
-                            countL += 1;
+                            countL += 1; countA += 2;
                             foreach (Actor auxActor in scene.Actors)
                             {// recorre los actores de la escena actual, la que se desea agregar
                                 countC += 1; countL += 2;
@@ -198,8 +213,11 @@ namespace GeneticFilmPlanification
                                     return false;
                                 }
                             }
+                            countL += 1;
                         }
+                        countL += 1;
                     }
+                    countL += 1;
                 }
             }
             countL += 1;
@@ -208,10 +226,10 @@ namespace GeneticFilmPlanification
 
         public static List<Day> createListWithDays(FilmingCalendar calendar)
         {
-            List<Day> newDays = new List<Day>(); countA += 1; countL += 1;
+            List<Day> newDays = new List<Day>(); countA += 2; countL += 2;
             for (int i = 1; i <= calendar.Scenes.Count+4; i++)// se crean los dias para asignarle las escenas que ya fueron cruzdas  
             {
-                countL += 1;
+                countL += 1; countA += 1; countC += 2;
                 Day newDay = new Day();        
                 newDay.DayNumber = i;          
                 Time time1 = new Time();       
@@ -220,22 +238,22 @@ namespace GeneticFilmPlanification
                 time2.MaximunScriptPages = 45; 
                 newDay.DayTime = time1;        
                 newDay.NightTime = time2;      
-                newDays.Add(newDay);                        
-                countA += 8; countL += 9;
+                newDays.Add(newDay);
+                countA += 9; countL += 9;
             }
-            countL += 1;
+            countL += 2; countC += 1;
             return newDays;
         }
 
         public static void accommodateScenesInDays(FilmingCalendar calendar, int positionScenario)
         {// resive el calendario que fue cruzado y se asignan las escenas del mismo a nuevos dias 
-            List<Day> newDays = createListWithDays(calendar); countA += 1; countL += 1;
+            List<Day> newDays = createListWithDays(calendar); countA += 2; countL += 2;
             foreach (Day day in newDays)
-            {
-                countL += 1;
+            { 
+                countA += 2; countL += 1;
                 foreach (Scene scene in calendar.Scenes)
                 {
-                    countC += 1; countL += 2;
+                    countC += 1; countL += 2; countA += 1;
                     if (scene.Schedule == true)
                     {
                         int space = availableSpace(day.DayTime); countA += 1; countL += 1;  // obtiene espacio disponible 
@@ -245,7 +263,7 @@ namespace GeneticFilmPlanification
                             bool can1 = canAssignedToActor(day, newDays, scene); countA += 1; countL += 1; // validar si los actores no estan el dia anterior en la jornada contraria 
                             countC += 1; countL += 1;
                             if (can1 == true)
-                                day.DayTime.Scenes.Add(scene); countL += 1;
+                                day.DayTime.Scenes.Add(scene); countA += 1; countL += 1;
                         }
                     }
                     countC += 1; countL += 1;
@@ -258,12 +276,13 @@ namespace GeneticFilmPlanification
                             bool can2 = canAssignedToActor(day, newDays, scene); countA += 1; countL += 1;// validar si los actores no estan el dia anterior en la jornada contraria 
                             countC += 1; countL += 1;
                             if (can2 == true)
-                                day.NightTime.Scenes.Add(scene); countL += 1;
+                                day.NightTime.Scenes.Add(scene); countA += 1; countL += 1;
                         }
                     }
                 }
+                countL += 1;
             }
-            movie.Scenarios[positionScenario].possibleDays.Add(newDays); countL += 1;
+            movie.Scenarios[positionScenario].possibleDays.Add(newDays); countA += 1; countL += 2;
         }
         /*------------------------------------------------------------------------------------------------------------------------------
                                                   ALGORITMO GENETICO OX
@@ -271,16 +290,18 @@ namespace GeneticFilmPlanification
         */
 
         public static void clearLists() {// limpia la lista de posibles dias en cada escenario
+            countA += 1; countL += 1;
             foreach (Scenario scenario in movie.Scenarios)
-                scenario.possibleDays.Clear(); countL += 2;
+                scenario.possibleDays.Clear(); countL += 2; countA += 1;
+            countL += 1;
         }
 
         public static FilmingCalendar createSonChromosomeOX(int size, int start1, int start2, int end1, int end2, FilmingCalendar chromosome)
         {
-            FilmingCalendar sonCalendar = new FilmingCalendar(); countA += 1; countL += 1;
+            FilmingCalendar sonCalendar = new FilmingCalendar(); countA += 2; countL += 2;
             foreach (Scene scene in chromosome.Scenes)
             {
-                int index = chromosome.Scenes.IndexOf(scene); countA += 1; countL += 2;
+                int index = chromosome.Scenes.IndexOf(scene); countA += 2; countL += 2;
                 countC += 1; countL += 1;
                 if (scene.marked == false) {
                     countC += 11; countL += 1;
@@ -289,14 +310,14 @@ namespace GeneticFilmPlanification
                         Scene newScene = new Scene();
                         newScene.id = "0";
                         newScene.marked = true; 
-                        sonCalendar.Scenes.Add(newScene); 
+                        sonCalendar.Scenes.Add(newScene); countA += 1;
                         countA += 3; countL += 5;
                         continue;
                     }   
-                    else sonCalendar.Scenes.Add(scene); countL += 1;
+                    else sonCalendar.Scenes.Add(scene); countA += 1; countL += 1;
                 }   
             }
-            countL += 1;
+            countL += 2;
             return sonCalendar;
         }
 
@@ -305,35 +326,39 @@ namespace GeneticFilmPlanification
             List<string> idScenes = new List<string>();             
             List<string> idScenes2 = new List<string>();            
             FilmingCalendar newSonCalendar = new FilmingCalendar(); 
-            countA += 3; countL += 3;
+            countA += 4; countL += 4;
             for (int i = 0;i< sonCalendar.Scenes.Count;i++) {
-                countC += 1; countL += 2;
+                countC += 2; countL += 2; countA += 2;
                 if (sonCalendar.Scenes[i].id!="0") 
-                    idScenes2.Add(sonCalendar.Scenes[i].id); countL += 1;
+                    idScenes2.Add(sonCalendar.Scenes[i].id); countL += 1; countA += 1;
             }
+            countC += 1; countA += 1; countL += 1;
             for (int i=0; i< sonCalendar.Scenes.Count;i++) {
+                countA += 1; countC += 1;
                 Scene scene = sonCalendar.Scenes[i];  countA += 1; countL += 2;
                 countC += 3; countL += 1;
-                if (scene.marked == true && scene.id.Equals("0")) { 
+                if (scene.marked == true && scene.id.Equals("0")) {
+                    countA += 1;
                     foreach (Scene auxScene in fatherCalendar.Scenes)
                     {
-                        countL += 1;
+                        countL += 1; countA += 1;
                         bool exists = idScenes.Contains(auxScene.id); countA += 1; countL += 1;
                         bool exists2 = idScenes2.Contains(auxScene.id); countA += 1; countL += 1;
                         countC += 3; countL += 1;
                         if (exists == false && exists2==false){ 
-                            newSonCalendar.Scenes.Add(auxScene); countL += 1;
-                            idScenes.Add(auxScene.id); countL += 2;
+                            newSonCalendar.Scenes.Add(auxScene); countA += 1; countL += 1;
+                            idScenes.Add(auxScene.id); countA += 1; countL += 2;
                             break;
                         }
                     }
+                    countL += 1;
                 }
                 else {
-                    idScenes.Add(scene.id); countL += 1;
-                    newSonCalendar.Scenes.Add(scene); countL += 1;
+                    idScenes.Add(scene.id); countL += 1; countA += 1;
+                    newSonCalendar.Scenes.Add(scene); countA += 1; countL += 1;
                 }   
             }
-            countL += 1;
+            countL += 2;countC += 1;
             return newSonCalendar;
         }
 
@@ -346,9 +371,10 @@ namespace GeneticFilmPlanification
             int end2 = (size - 1)-1; 
             FilmingCalendar descendent1; 
             FilmingCalendar descendent2; 
-            countA += 5; countL += 7;
+            countA += 6; countL += 8;
             for (int i = 0; i < 1; i++)
             { // El cruce se realizará la cantidad de veces que se ejecute este for 
+                countA += 1; countC += 1;
                 FilmingCalendar chromosome1 = movie.Scenarios[positionScenario].FilmingCalendars[0]; 
                 FilmingCalendar chromosome2 = generateChromosome(chromosome1); 
                 descendent1 = createSonChromosomeOX(size, start1, start2, end1, end2, chromosome1); 
@@ -361,6 +387,7 @@ namespace GeneticFilmPlanification
                 chromosome2 = newDesendent2;
                 countA += 8; countL += 10;
             }
+            countL += 1;countC += 1;
         }
 
         public static void performOxInAllScenarios()
@@ -375,8 +402,10 @@ namespace GeneticFilmPlanification
                 List<Day> days = chooseTheBestCalendar(i);// posición del escenario    
                 int costo1 = Data.calculatePriceOfCalendar(i, movie.Scenarios[i].Days);
                 int costo2 = Data.calculatePriceOfCalendar(i, days);
-                Console.WriteLine("                         Escenario numero " + numberOfScenario);
-                Console.WriteLine("calendario original el costo es de : " + costo1 + " calendario mutado el costo es de : " + costo2);
+                Console.WriteLine("              Escenario numero " + numberOfScenario);
+                Console.WriteLine("Calendario original: " + costo1 + " Calendario mutado: " + costo2);
+                Console.WriteLine("\nAsignaciones: " + Pmx.countA + "     Comparaciones: " + Pmx.countC + "     Lineas ejecutadas: " + Pmx.countL + "\n");
+                Pmx.countA = 0; Pmx.countL = 0; Pmx.countC = 0;
             }
         }
     }

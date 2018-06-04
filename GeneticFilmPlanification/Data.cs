@@ -714,8 +714,10 @@ namespace GeneticFilmPlanification
                 List<Day> days = Pmx.chooseTheBestCalendar(i);// posición del escenario    
                 int costo1 = Data.calculatePriceOfCalendar(i, movie.Scenarios[i].Days);
                 int costo2 = Data.calculatePriceOfCalendar(i, days);
-                Console.WriteLine("                         Escenario numero " + numberOfScenario);
-                Console.WriteLine("calendario original el costo es de : " + costo1 + " calendario mutado el costo es de : " + costo2);
+                Console.WriteLine("              Escenario numero " + numberOfScenario);
+                Console.WriteLine("Calendario original: " + costo1 + " Calendario mutado: " + costo2);
+                Console.WriteLine("\nAsignaciones: "+Pmx.countA+ "     Comparaciones: " + Pmx.countC+ "     Lineas ejecutadas: " + Pmx.countL+"\n");
+                Pmx.countA = 0; Pmx.countL = 0; Pmx.countC = 0;
             }
             
         }
