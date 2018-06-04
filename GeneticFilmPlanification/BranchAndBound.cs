@@ -19,11 +19,12 @@ namespace GeneticFilmPlanification
         private List<FilmingCalendar> Scenario4Calendars = new List<FilmingCalendar>();
 
         // mejores soluciones para cada calendario
-        private FilmingCalendar BSSF1;
-        private FilmingCalendar BSSF2;
-        private FilmingCalendar BSSF3;
-        private FilmingCalendar BSSF4;
+        public List<Day> BSSF1 = new List<Day>();
+        public List<Day> BSSF2 = new List<Day>();
+        public List<Day> BSSF3 = new List<Day>();
+        public List<Day> BSSF4   = new List<Day>();
         private int InitialCost1, InitialCost2, InitialCost3, InitialCost4;
+        private int FinalCost1, FinalCost2, FinalCost3, FinalCost4;
         /// <summary>
         /// en esta lista se guarda el orden de la combinacion
         /// Cuando la recursividad retorne, se podrá calcular el costo de esa combinacion
@@ -36,21 +37,17 @@ namespace GeneticFilmPlanification
         public BranchAndBound(List<Scenario> scenarios, Movie movieInstance)
         {
             // seteo por defecto de las mejores soluciones para cada escenario
-            this.BSSF1 = scenarios.ElementAt(0).FilmingCalendars.ElementAt(0);
-            this.BSSF1.Cost = Data.calculatePriceOfCalendar(0, Movie.GetInstance().Scenarios[0].Days);
-            InitialCost1 = BSSF1.Cost;
-            
-            this.BSSF2 = scenarios.ElementAt(1).FilmingCalendars.ElementAt(0);
-            this.BSSF2.Cost = Data.calculatePriceOfCalendar(1, Movie.GetInstance().Scenarios[1].Days);
-            InitialCost2 = BSSF2.Cost;
-            
-            this.BSSF3 = scenarios.ElementAt(2).FilmingCalendars.ElementAt(0);
-            this.BSSF3.Cost = Data.calculatePriceOfCalendar(2, Movie.GetInstance().Scenarios[2].Days);
-            InitialCost3 = BSSF3.Cost;
-            
-            this.BSSF4 = scenarios.ElementAt(3).FilmingCalendars.ElementAt(0);
-            this.BSSF4.Cost = Data.calculatePriceOfCalendar(3, Movie.GetInstance().Scenarios[3].Days);
-            InitialCost4 = BSSF4.Cost;
+            this.BSSF1 = scenarios[0].Days;
+            InitialCost1 = Data.calculatePriceOfCalendar(0, BSSF1);
+
+            this.BSSF2 = scenarios[1].Days;
+            InitialCost2 = Data.calculatePriceOfCalendar(1, BSSF2);
+
+            this.BSSF3 = scenarios[2].Days;
+            InitialCost3 = Data.calculatePriceOfCalendar(2, BSSF3);
+
+            this.BSSF4 = scenarios[3].Days;
+            InitialCost4 = Data.calculatePriceOfCalendar(3, BSSF4);
 
             // inicialización de datos para el algoritmo
             this.Scenario1Calendars.Add(scenarios[0].FilmingCalendars.ElementAt(0));
