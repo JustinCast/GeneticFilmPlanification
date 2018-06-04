@@ -24,5 +24,24 @@ namespace GeneticFilmPlanification.Models
             Scenes.ForEach(s => cost += s.Pages);
             return cost;
         }
+
+        public bool IfLocationIsUsed(Location l)
+        {
+            bool state = false;
+            Scenes.ForEach(s => {
+                if (s.Location == l)
+                    state = true;
+            });
+            return state;
+        }
+
+        public void UseLocation(Location l)
+        {
+            foreach(Location loc in AvailableLocations)
+            {
+                if (loc == l)
+                    loc.InUse = true;
+            }
+        }
     }
 }

@@ -136,13 +136,13 @@ namespace GeneticFilmPlanification
         public static int CalendarCost(List<Scene> scenes)
         {
             int cost = 0;
-            foreach (Scene s in scenes)
-                foreach (Actor a in s.Actors)
-                    cost += a.CostPerDay;
+            foreach(Scene s in scenes)
+            {
+                if()
+            }
             return cost;
         }
         #endregion
-
 
         #region región de código donde se tienen todas las impresiones en consola
         public void PrintCostComparison()
