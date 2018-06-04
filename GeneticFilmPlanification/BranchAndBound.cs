@@ -36,19 +36,19 @@ namespace GeneticFilmPlanification
         {
             // seteo por defecto de las mejores soluciones para cada escenario
             this.BSSF1 = scenarios.ElementAt(0).FilmingCalendars.ElementAt(0);
-            this.BSSF1.Cost = CombinationCost(BSSF1.Scenes, 0);
+            this.BSSF1.Cost = CalendarCost(BSSF1.Scenes);
             InitialCost1 = BSSF1.Cost;
             
             this.BSSF2 = scenarios.ElementAt(1).FilmingCalendars.ElementAt(0);
-            this.BSSF2.Cost = CombinationCost(BSSF2.Scenes, 1);
+            this.BSSF2.Cost = CalendarCost(BSSF2.Scenes); ;
             InitialCost2 = BSSF2.Cost;
             
             this.BSSF3 = scenarios.ElementAt(2).FilmingCalendars.ElementAt(0);
-            this.BSSF3.Cost = CombinationCost(BSSF3.Scenes, 2);
+            this.BSSF3.Cost = CalendarCost(BSSF3.Scenes); ;
             InitialCost3 = BSSF3.Cost;
             
             this.BSSF4 = scenarios.ElementAt(3).FilmingCalendars.ElementAt(0);
-            this.BSSF4.Cost = CombinationCost(BSSF4.Scenes, 3);
+            this.BSSF4.Cost = CalendarCost(BSSF4.Scenes); ;
             InitialCost4 = BSSF4.Cost;
 
             // inicialización de datos para el algoritmo
@@ -84,8 +84,9 @@ namespace GeneticFilmPlanification
         private void MakeCombination(List<Scene> scenes, FilmingCalendar BSSF, int pos)
         {            
             if (scenes.Count == 0) {
-                if (CombinationCost(Combination, pos) < BSSF.Cost)
-                    MakeNewBSSF(Combination, BSSF, pos);
+                if(EvaluateCombination(scenes, pos))
+                    if (CombinationCost(Combination, pos) < BSSF.Cost)
+                        MakeNewBSSF(Combination, BSSF, pos);
                 // limpia la lista para que guarde una nueva combinacion
                 this.Combination.Clear();
                 return;
@@ -111,6 +112,8 @@ namespace GeneticFilmPlanification
             }
         }
         #endregion
+
+        #region región de código para poda o evaluación del algoritmo
         /// <summary>
         /// Creará una nueva mejor solución (calendario)
         /// </summary>
@@ -121,10 +124,9 @@ namespace GeneticFilmPlanification
             BSSF.Cost = CombinationCost(scenes, pos);
         }
 
-        #region región de código para poda o evaluación del algoritmo
         private int CombinationCost(List<Scene> scenes, int pos)
         {
-            int cost = CalendarCost(scenes, pos);
+            int cost = CalendarCost(scenes);
             Console.WriteLine("COSTO COMBINACION: " + cost);
             return cost;
         }
@@ -133,47 +135,66 @@ namespace GeneticFilmPlanification
         /// Calcula el costo total del calendario para el Algoritmo B&B
         /// </summary>
         /// <returns>Costo total del calendario</returns>
-        public static int CalendarCost(List<Scene> scenes, int pos)
+        private int CalendarCost(List<Scene> scenes)
         {
             int cost = 0;
-            foreach(Day d in Movie.GetInstance().Scenarios[pos].Days)
+            foreach(Scene s in scenes)
             {
-                foreach(Scene s in scenes)
-                {
-                    if (d.DayTime.IfSceneIsAllowed(s) && !d.DayTime.IfLocationIsUsed(s.Location))
-                    {
-
-                    }
-                }
+                foreach (Actor a in s.Actors)
+                    cost += a.CostPerDay;
             }
             return cost;
         }
+
+        private bool EvaluateCombination(List<Scene> scenes, int pos)
+        {
+            foreach (Day d in Movie.GetInstance().Scenarios[pos].Days)
+            {
+                foreach (Scene s in scenes)
+                {
+                    if (d.DayTime.IfSceneIsAllowed(s) && !d.DayTime.IfLocationIsUsed(s.Location))
+                    {
+                        foreach (Actor a in s.Actors)
+                        {
+                            if (CheckActorOverloadInDifferentDays(a, pos) || CheckActorOverloadInSameDay(a, pos))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else
+                        return false;
+                }
+            }
+            return true;
+        }
+
         #endregion
 
         #region región de código donde se tienen todas las impresiones en consola
         public void PrintCostComparison()
-        {
-            Console.WriteLine("________________________________________");
-            Console.WriteLine("Costo INICIAL Calendario 1: " + InitialCost1);
-            Console.WriteLine("Costo FINAL Calendario 1: " + BSSF1.Cost);
-            Console.WriteLine("________________________________________");
-            Console.WriteLine("Costo INICIAL Calendario 2: " + InitialCost2);
-            Console.WriteLine("Costo FINAL Calendario 2: " + BSSF2.Cost);
-            Console.WriteLine("________________________________________");
-            Console.WriteLine("Costo INICIAL Calendario 3: " + InitialCost3);
-            Console.WriteLine("Costo FINAL Calendario 3: " + BSSF3.Cost);
-            Console.WriteLine("________________________________________");
-            Console.WriteLine("Costo INICIAL Calendario 4: " + InitialCost4);
-            Console.WriteLine("Costo FINAL Calendario 4: " + BSSF4.Cost);
-            Console.WriteLine("________________________________________");
-        }
+    {
+        Console.WriteLine("________________________________________");
+        Console.WriteLine("Costo INICIAL Calendario 1: " + InitialCost1);
+        Console.WriteLine("Costo FINAL Calendario 1: " + BSSF1.Cost);
+        Console.WriteLine("________________________________________");
+        Console.WriteLine("Costo INICIAL Calendario 2: " + InitialCost2);
+        Console.WriteLine("Costo FINAL Calendario 2: " + BSSF2.Cost);
+        Console.WriteLine("________________________________________");
+        Console.WriteLine("Costo INICIAL Calendario 3: " + InitialCost3);
+        Console.WriteLine("Costo FINAL Calendario 3: " + BSSF3.Cost);
+        Console.WriteLine("________________________________________");
+        Console.WriteLine("Costo INICIAL Calendario 4: " + InitialCost4);
+        Console.WriteLine("Costo FINAL Calendario 4: " + BSSF4.Cost);
+        Console.WriteLine("________________________________________");
+    }
 
         private void PrintCombination(List<Scene> scenes)
         {
             Console.WriteLine("######### COMBINACIÓN #########");
             String c = "";
             foreach (Scene s in scenes)
-                c += s.Location.ID + "-";
+                c += s.id + "-";
             Console.WriteLine(c);
         }
 
@@ -186,6 +207,13 @@ namespace GeneticFilmPlanification
             return new List<T>(items);
         }
 
+
+        /// <summary>
+        /// Método que se encarga de revisar si un actor tiene una sobrecarga de trabajo en días distintos
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="scenarioPos"></param>
+        /// <returns></returns>
         private bool CheckActorOverloadInDifferentDays(Actor a, int scenarioPos)
         {
             for(int i = 0; i < Movie.GetInstance().Scenarios[scenarioPos].Days.Count(); i++)
@@ -207,6 +235,25 @@ namespace GeneticFilmPlanification
                             return true;
                     }
                 }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Método que verifica si el actor participa en dos jornadas el  mismo día
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="scenarioPos"></param>
+        /// <returns></returns>
+        private bool CheckActorOverloadInSameDay(Actor a, int scenarioPos)
+        {
+            for(int i = 0; i < Movie.GetInstance().Scenarios[scenarioPos].Days.Count(); i++)
+            {
+                if (
+                    IfParticipateInTime(Movie.GetInstance().Scenarios[scenarioPos].Days[i].DayTime, a)
+                    &&
+                    IfParticipateInTime(Movie.GetInstance().Scenarios[scenarioPos].Days[i].NightTime, a))
+                    return true;
             }
             return false;
         }
