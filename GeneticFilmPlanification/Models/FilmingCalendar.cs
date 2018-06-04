@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,20 +19,6 @@ namespace GeneticFilmPlanification.Models
         {
             this.Scenes = scenes;
             this.Cost = cost;
-        }
-
-
-        /// <summary>
-        /// Calcula el costo total del calendario para el Algoritmo B&B
-        /// </summary>
-        /// <returns>Costo total del calendario</returns>
-        public static int CalendarCost(List<Scene> scenes)
-        {
-            int cost = 0;
-            foreach(Scene s in scenes)
-                foreach (Actor a in s.Actors)
-                    cost += a.CostPerDay;
-            return cost;
         }
     }
 }
