@@ -15,7 +15,12 @@ namespace GeneticFilmPlanification.Models
 
         public bool IfSceneIsAllowed(Scene s)
         {
-            return (TotalPages() + s.Pages) < MaximunScriptPages;
+            int cost = 0;
+            foreach(Scene sc in Scenes)
+            {
+                cost += sc.Pages;
+            }
+            return (cost + s.Pages) < MaximunScriptPages;
         }
 
         public int TotalPages()
