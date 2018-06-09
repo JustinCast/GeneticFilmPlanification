@@ -257,7 +257,7 @@ namespace GeneticFilmPlanification
             assignActorToScene("6", 6, positionScenario);
             assignActorToScene("7", 6, positionScenario);
             assignActorToScene("8", 6, positionScenario);
-            assignActorToScene("10", 6, positionScenario);
+            //assignActorToScene("10", 6, positionScenario);
 
             createScene(9, false, "1", positionScenario, "8");
             assignActorToScene("12", 7, positionScenario);
@@ -330,7 +330,7 @@ namespace GeneticFilmPlanification
             createScene(14, false, "3", positionScenario, "9");
             assignActorToScene("1", 8, positionScenario);
             assignActorToScene("44", 8, positionScenario);
-            assignActorToScene("10", 8, positionScenario);
+            //assignActorToScene("10", 8, positionScenario);
 
             createScene(15, false, "4", positionScenario, "10");
             assignActorToScene("1", 9, positionScenario);
@@ -340,7 +340,7 @@ namespace GeneticFilmPlanification
             createScene(22, false, "6", positionScenario, "11");
             assignActorToScene("40", 10, positionScenario);
             assignActorToScene("33", 10, positionScenario);
-            assignActorToScene("10", 10, positionScenario);
+            //assignActorToScene("10", 10, positionScenario);
 
             createScene(23, false, "6", positionScenario, "12");
             assignActorToScene("19", 11, positionScenario);
@@ -537,14 +537,14 @@ namespace GeneticFilmPlanification
             assignActorToScene("68", 4, positionScenario);
 
             createScene(13, true, "7", positionScenario, "6");
-            assignActorToScene("78", 5, positionScenario);
-            assignActorToScene("58", 5, positionScenario);
+            //assignActorToScene("78", 5, positionScenario);
+            //assignActorToScene("58", 5, positionScenario);
             assignActorToScene("29", 5, positionScenario);
             assignActorToScene("2", 5, positionScenario);
             assignActorToScene("100", 5, positionScenario);
 
             createScene(19, true, "4", positionScenario, "7");
-            assignActorToScene("78", 6, positionScenario);
+            //assignActorToScene("78", 6, positionScenario);
             assignActorToScene("28", 6, positionScenario);
             assignActorToScene("20", 6, positionScenario);
             assignActorToScene("30", 6, positionScenario);
@@ -554,7 +554,7 @@ namespace GeneticFilmPlanification
             assignActorToScene("20", 7, positionScenario);
             assignActorToScene("8", 7, positionScenario);
             assignActorToScene("99", 7, positionScenario);
-            assignActorToScene("78", 7, positionScenario);
+            //assignActorToScene("78", 7, positionScenario);
             assignActorToScene("29", 7, positionScenario);
 
             createScene(16, true, "3", positionScenario, "9");
@@ -568,8 +568,8 @@ namespace GeneticFilmPlanification
             assignActorToScene("10", 9, positionScenario);
             assignActorToScene("14", 9, positionScenario);
             assignActorToScene("4", 9, positionScenario);
-            assignActorToScene("58", 9, positionScenario);
-            assignActorToScene("78", 9, positionScenario);
+            //assignActorToScene("58", 9, positionScenario);
+            //assignActorToScene("78", 9, positionScenario);
 
             createScene(17, false, "4", positionScenario, "11");
             assignActorToScene("98", 10, positionScenario);
@@ -643,7 +643,7 @@ namespace GeneticFilmPlanification
             }  
         }
 
-        public static int calculatePriceOfCalendar(int positionScenario,List<Day> days) {// calcula el precio total del calendario en los dias 
+        public static int calculatePriceOfCalendar(int positionScenario, List<Day> days) {// calcula el precio total del calendario en los dias 
             int totalPrice = 0;
             List<Actor> actors = movie.Scenarios[positionScenario].Actors;
             int firstParticipation = 0;

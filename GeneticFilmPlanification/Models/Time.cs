@@ -15,7 +15,12 @@ namespace GeneticFilmPlanification.Models
 
         public bool IfSceneIsAllowed(Scene s)
         {
-            return (TotalPages() + s.Pages) < MaximunScriptPages;
+            int cost = 0;
+            foreach(Scene sc in Scenes)
+            {
+                cost += sc.Pages;
+            }
+            return (cost + s.Pages) < MaximunScriptPages;
         }
 
         public int TotalPages()
@@ -23,6 +28,25 @@ namespace GeneticFilmPlanification.Models
             int cost = 0;
             Scenes.ForEach(s => cost += s.Pages);
             return cost;
+        }
+
+        public bool IfLocationIsUsed(Location l)
+        {
+            foreach (Scene s in Scenes)
+                if (s.Location.Equals(l))
+                {
+                    return true;
+                }
+            return false;
+        }
+
+        public void UseLocation(Location l)
+        {
+            foreach(Location loc in AvailableLocations)
+            {
+                if (loc == l)
+                    loc.InUse = true;
+            }
         }
     }
 }
