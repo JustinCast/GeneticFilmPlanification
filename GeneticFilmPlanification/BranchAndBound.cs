@@ -29,7 +29,7 @@ namespace GeneticFilmPlanification
 
         // BSSF
         public List<int> BSSF = new List<int>();
-        int cont = 0;
+        static int cont = 0;
 
         private int InitialCost1, InitialCost2, InitialCost3, InitialCost4;
         private int FinalCost1, FinalCost2, FinalCost3, FinalCost4;
@@ -78,6 +78,8 @@ namespace GeneticFilmPlanification
             MakeCombination(Scenario1Scenes, Scenario1Days, InitialCost1);
             FinalCost1 = BSSF.Min(); countA++;
             BSSF.Clear();
+            BranchAndBound.ScenariosResults();
+            countA = 0; countC = 0; cont = 0;
 
             // Escenario 2
             cont = 0; countA++;
@@ -88,6 +90,8 @@ namespace GeneticFilmPlanification
             MakeCombination(Scenario2Scenes, Scenario2Days, InitialCost2);
             FinalCost2 = BSSF.Min(); countA++;
             BSSF.Clear(); countA++;
+            BranchAndBound.ScenariosResults();
+            countA = 0; countC = 0; cont = 0;
 
             // Escenario 3
             cont = 0; countA++;
@@ -98,6 +102,8 @@ namespace GeneticFilmPlanification
             MakeCombination(Scenario3Scenes, Scenario3Days, InitialCost3);
             FinalCost3 = BSSF.Min(); countA++;
             BSSF.Clear();
+            BranchAndBound.ScenariosResults();
+            countA = 0; countC = 0; cont = 0;
 
             // Escenario 4
             cont = 0; countA++;
@@ -108,6 +114,9 @@ namespace GeneticFilmPlanification
             MakeCombination(Scenario4Scenes, Scenario4Days, InitialCost4);
             FinalCost4 = BSSF.Min(); countA++;
             BSSF.Clear(); countA++;
+            BranchAndBound.ScenariosResults();
+            countA = 0; countC = 0; cont = 0;
+
             PrintCostComparison();
         }
         #endregion
@@ -137,7 +146,7 @@ namespace GeneticFilmPlanification
             {
                 countC +=3;
                 if (!FirstTime)
-                    if (CombinationCost(Combination) > initialCost || cont == 4000)
+                    if (CombinationCost(Combination) > initialCost || cont == 5000)
                         return;
                 FirstTime = false; countA++;
                 this.Combination.Remove(s); this.Combination.Add(s); countA+=2;
@@ -267,6 +276,7 @@ namespace GeneticFilmPlanification
         {
             Console.WriteLine("Cantidad de asignaciones: " + countA);
             Console.WriteLine("Cantidad de comparaciones: " + countC);
+            Console.WriteLine("Cantidad de llamadas recursivas: " + cont);
         }
 
         private void PrintCombination(List<Scene> scenes)
