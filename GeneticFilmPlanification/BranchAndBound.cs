@@ -15,7 +15,6 @@ namespace GeneticFilmPlanification
         // contadores de asignaciones y comparaciones
         static int countA = 0;
         static int countC = 0;
-        static int countL = 0;
 
         // listas de cada escenario
         private List<Scene> Scenario1Scenes = new List<Scene>();
@@ -46,23 +45,23 @@ namespace GeneticFilmPlanification
         public BranchAndBound(List<Scenario> scenarios, Movie movieInstance)
         {
             // seteo por defecto de las mejores soluciones para cada escenario
-            this.Scenario1Days = scenarios[0].Days; countA++; countL++;
-            InitialCost1 = Data.calculatePriceOfCalendar(1, Scenario2Days); countA++; countL++;
+            this.Scenario1Days = scenarios[0].Days; countA++;
+            InitialCost1 = Data.calculatePriceOfCalendar(0, Scenario1Days); countA++;
 
             this.Scenario2Days = scenarios[1].Days; countA++;
-            InitialCost2 = Data.calculatePriceOfCalendar(1, Scenario2Days); countA++; countL++;
+            InitialCost2 = Data.calculatePriceOfCalendar(1, Scenario2Days); countA++;
 
             this.Scenario3Days = scenarios[2].Days; countA++;
-            InitialCost3 = Data.calculatePriceOfCalendar(2, Scenario3Days); countA++; countL++;
+            InitialCost3 = Data.calculatePriceOfCalendar(2, Scenario3Days); countA++;
 
             this.Scenario4Days = scenarios[3].Days; countA++;
-            InitialCost4 = Data.calculatePriceOfCalendar(3, Scenario4Days); countA++; countL++;
+            InitialCost4 = Data.calculatePriceOfCalendar(3, Scenario4Days); countA++;
 
             // inicialización de datos para el algoritmo
-            AssignDayAtrribute(Scenario1Days, Scenario1Scenes); countL++;
-            AssignDayAtrribute(Scenario2Days, Scenario2Scenes); countL++;
-            AssignDayAtrribute(Scenario3Days, Scenario3Scenes); countL++;
-            AssignDayAtrribute(Scenario4Days, Scenario4Scenes); countL++;
+            AssignDayAtrribute(Scenario1Days, Scenario1Scenes);
+            AssignDayAtrribute(Scenario2Days, Scenario2Scenes);
+            AssignDayAtrribute(Scenario3Days, Scenario3Scenes);
+            AssignDayAtrribute(Scenario4Days, Scenario4Scenes);
         }
 
         /// <summary>
@@ -72,65 +71,61 @@ namespace GeneticFilmPlanification
         public void RunBB()
         {
             // Escenario 1
-            cont = 0; countA++; countL++;
-            this.Combination = this.ShallowClone(Scenario1Scenes); countA++; countL++;
-            SetActorParticipation(Movie.GetInstance().Scenarios[0].Actors, Scenario1Scenes); countL++;
-            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 1 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n"); countL++;
-            MakeCombination(Scenario1Scenes, Scenario1Days, InitialCost1); countL++;
-            FinalCost1 = BSSF.Min(); countA++; countL++;
-            BSSF.Clear(); countL++;
+            cont = 0; countA++;
+            this.Combination = this.ShallowClone(Scenario1Scenes); countA++;
+            SetActorParticipation(Movie.GetInstance().Scenarios[0].Actors, Scenario1Scenes);
+            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 1 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n");
+            MakeCombination(Scenario1Scenes, Scenario1Days, InitialCost1);
+            FinalCost1 = BSSF.Min(); countA++;
+            BSSF.Clear();
 
             // Escenario 2
-            cont = 0; countA++; countL++;
-            FirstTime = true; countA++; countL++;
-            this.Combination = this.ShallowClone(Scenario2Scenes); countA++; countL++;
-            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 2 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n"); countL++;
-            SetActorParticipation(Movie.GetInstance().Scenarios[1].Actors, Scenario2Scenes); countL++;
-            MakeCombination(Scenario2Scenes, Scenario2Days, InitialCost2); countL++;
-            FinalCost2 = BSSF.Min(); countA++; countL++;
-            BSSF.Clear(); countA++; countL++;
+            cont = 0; countA++;
+            FirstTime = true; countA++;
+            this.Combination = this.ShallowClone(Scenario2Scenes); countA++;
+            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 2 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n");
+            SetActorParticipation(Movie.GetInstance().Scenarios[1].Actors, Scenario2Scenes);
+            MakeCombination(Scenario2Scenes, Scenario2Days, InitialCost2);
+            FinalCost2 = BSSF.Min(); countA++;
+            BSSF.Clear(); countA++;
 
             // Escenario 3
-            cont = 0; countA++; countL++;
-            FirstTime = true; countA++; countL++;
-            this.Combination = this.ShallowClone(Scenario3Scenes); countA++; countL++;
-            SetActorParticipation(Movie.GetInstance().Scenarios[2].Actors, Scenario3Scenes); countL++;
-            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 3 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n"); countL++;
-            MakeCombination(Scenario3Scenes, Scenario3Days, InitialCost3); countL++;
-            FinalCost3 = BSSF.Min(); countA++; countL++;
-            BSSF.Clear(); countL++;
+            cont = 0; countA++;
+            FirstTime = true; countA++;
+            this.Combination = this.ShallowClone(Scenario3Scenes); countA++;
+            SetActorParticipation(Movie.GetInstance().Scenarios[2].Actors, Scenario3Scenes);
+            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 3 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n");
+            MakeCombination(Scenario3Scenes, Scenario3Days, InitialCost3);
+            FinalCost3 = BSSF.Min(); countA++;
+            BSSF.Clear();
 
             // Escenario 4
-            cont = 0; countA++; countL++;
-            FirstTime = true; countA++; countL++;
-            this.Combination = this.ShallowClone(Scenario4Scenes); countA++; countL++;
-            SetActorParticipation(Movie.GetInstance().Scenarios[3].Actors, Scenario4Scenes); countL++;
-            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 4 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n"); countL++;
-            MakeCombination(Scenario4Scenes, Scenario4Days, InitialCost4); countL++;
-            FinalCost4 = BSSF.Min(); countA++; countL++;
-            BSSF.Clear(); countA++; countL++;
-            PrintCostComparison(); countL++;
+            cont = 0; countA++;
+            FirstTime = true; countA++;
+            this.Combination = this.ShallowClone(Scenario4Scenes); countA++;
+            SetActorParticipation(Movie.GetInstance().Scenarios[3].Actors, Scenario4Scenes);
+            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 4 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n");
+            MakeCombination(Scenario4Scenes, Scenario4Days, InitialCost4);
+            FinalCost4 = BSSF.Min(); countA++;
+            BSSF.Clear(); countA++;
+            PrintCostComparison();
         }
         #endregion
 
         #region ramificación de B&B
         private void MakeCombination(List<Scene> scenes, List<Day> days, int initialCost)
-        {
-            countL++;
+        {            
             countC++;
             if (scenes.Count() == 0)
             {
-                countL++;
                 countC++;
                 if (EvaluateCombination(Combination, days))
                 {
-                    countL++;
                     countC +=2;
                     if (CombinationCost(Combination) < initialCost && CombinationCost(Combination) > 0)
                     {
-                        countL++;
-                        PrintCombination(Combination); countL++;
-                        BSSF.Add(CombinationCost(Combination)); countA++; countL++;
+                        //PrintCombination(Combination);
+                        BSSF.Add(CombinationCost(Combination)); countA++;
                         return;
                     }
                     return;
@@ -138,22 +133,19 @@ namespace GeneticFilmPlanification
                 return;
             }
             countA++;
-            countL++;
             foreach (Scene s in scenes)
             {
-                countL++;
                 countC +=3;
-                countL+=2;
                 if (!FirstTime)
-                    if (CombinationCost(Combination) > initialCost || cont == 2000)
+                    if (CombinationCost(Combination) > initialCost || cont == 4000)
                         return;
-                FirstTime = false; countA++; countL++;
-                this.Combination.Remove(s); this.Combination.Add(s); countL += 2; countA+=2;
+                FirstTime = false; countA++;
+                this.Combination.Remove(s); this.Combination.Add(s); countA+=2;
                 List<Scene> aux = ShallowClone(scenes); countA++; 
-                aux.Remove(s); countL++;
-                SetActorParticipation(s.Actors, Combination); countL++;
-                cont++; countL++;
-                MakeCombination(aux, days, initialCost); countL++;
+                aux.Remove(s);
+                SetActorParticipation(s.Actors, Combination);
+                cont++;
+                MakeCombination(aux, days, initialCost);
             }
         }
         #endregion
@@ -161,12 +153,11 @@ namespace GeneticFilmPlanification
         #region región de código para poda o evaluación del algoritmo
         private int CombinationCost(List<Scene> scenes)
         {
-            int total = 0; countA++; countL++;
-            List<Actor> AlreadyCalculated = new List<Actor>(); countA++; countL++;
+            int total = 0; countA++;
+            List<Actor> AlreadyCalculated = new List<Actor>(); countA++;
             countA++;
             foreach (Scene s in scenes)
             {
-                countL++;
                 countA++;
                 foreach (Actor a in s.Actors)
                 {
