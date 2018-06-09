@@ -72,26 +72,30 @@ namespace GeneticFilmPlanification
             }  
         }
 
-        public static void assignScenesToDay(int positionScenario) {// Este metodo recorre los dias y le asigna una escena ya sea de dia o de noche 
-            foreach (Day day in movie.Scenarios[positionScenario].Days) {
-                foreach (Scene scene in movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes)
+        public static void assignScenesToDay() {// Este metodo recorre los dias y le asigna una escena ya sea de dia o de noche 
+            foreach (Scenario scenario in movie.Scenarios) {
+                foreach (Day day in scenario.Days)
                 {
-                    if (scene.assigned == false) {
-                        if (scene.Schedule == true)
+                    foreach (Scene scene in scenario.FilmingCalendars[0].Scenes)
+                    {
+                        if (scene.assigned == false)
                         {
-                            scene.assigned = true;
-                            day.DayTime.Scenes.Add(scene);
-                            break;
-                        }
-                        if (scene.Schedule == false)
-                        {
-                            scene.assigned = true;
-                            day.NightTime.Scenes.Add(scene);
-                            break;
+                            if (scene.Schedule == true)
+                            {
+                                scene.assigned = true;
+                                day.DayTime.Scenes.Add(scene);
+                                break;
+                            }
+                            if (scene.Schedule == false)
+                            {
+                                scene.assigned = true;
+                                day.NightTime.Scenes.Add(scene);
+                                break;
+                            }
                         }
                     }
                 }
-            }
+            }           
         } 
 
         public static void printDays() {
@@ -159,7 +163,6 @@ namespace GeneticFilmPlanification
             }
         }
 
-
         public static void createCalendar(int positionScenario) {
             FilmingCalendar newCalendar = new FilmingCalendar();
             movie.Scenarios[positionScenario].FilmingCalendars.Add(newCalendar);
@@ -204,7 +207,6 @@ namespace GeneticFilmPlanification
             Actor actor = searchActor(idActor, positionScenario);
             movie.Scenarios[positionScenario].FilmingCalendars[0].Scenes[positionScene].Actors.Add(actor);
         }
- 
 
         public static void createScenario1(int numberOfLocation, int numberOfActors, int positionScenario)
         {
@@ -646,78 +648,112 @@ namespace GeneticFilmPlanification
             List<Actor> actors = movie.Scenarios[positionScenario].Actors;
             int firstParticipation = 0;
             int lastParticipation = 0;
+            Pmx.countL +=5; Pmx.countA += 4;
+
             foreach (Actor actor in actors)
             {
+                Pmx.countA += 1; Pmx.countL += 1;
                 foreach (Day day in days)
                 {
+                    Pmx.countA += 1; Pmx.countL += 2; Pmx.countC += 1;
                     if (day.DayTime.Scenes.Count != 0)// recocrre las escenas de dia unicamente 
                     {
                         foreach (Scene scene in day.DayTime.Scenes)
                         {
+                            Pmx.countA += 1; Pmx.countL += 1;
                             foreach (Actor auxActor in scene.Actors)
                             {
+                                Pmx.countA += 1; Pmx.countL += 2; Pmx.countC += 3;
                                 if (auxActor.ID.Equals(actor.ID) && firstParticipation==0) {
                                     firstParticipation = day.DayNumber;
+                                    Pmx.countA += 1; Pmx.countL += 2;
                                     break;
                                 }
+                                Pmx.countC += 1; Pmx.countL += 1; 
                                 if (auxActor.ID.Equals(actor.ID))
                                 {
                                     lastParticipation = day.DayNumber;
+                                    Pmx.countA += 1; Pmx.countL += 2;
                                     break;
                                 }
                             }
+                            Pmx.countA += 1; Pmx.countL += 2;
                             break;
                         }
+                        Pmx.countA += 1; Pmx.countL += 1;
                     }
+                    Pmx.countL += 1; Pmx.countC += 1;
                     if (day.NightTime.Scenes.Count != 0)// recorre las escenas de noche unicamente 
                     {
                         foreach (Scene scene in day.NightTime.Scenes)
                         {
+                            Pmx.countA += 1; Pmx.countL += 1;
                             foreach (Actor auxActor in scene.Actors)
                             {
+                                Pmx.countA += 1; Pmx.countL += 2; Pmx.countC += 3;
                                 if (auxActor.ID.Equals(actor.ID) && firstParticipation == 0)
                                 {
                                     firstParticipation = day.DayNumber;
+                                    Pmx.countA += 1; Pmx.countL += 2;
                                     break;
                                 }
+                                Pmx.countL += 1; Pmx.countC += 1;
                                 if (auxActor.ID.Equals(actor.ID))
                                 {
                                     lastParticipation = day.DayNumber;
+                                    Pmx.countA += 1; Pmx.countL += 2; 
                                     break;
                                 }
                             }
+                            Pmx.countA += 1; Pmx.countL += 2;
                             break;
                         }
+                        Pmx.countA += 1; Pmx.countL += 1;
                     }
                 }
-                for (int i = firstParticipation; i <= lastParticipation; i++)// suma el precio del actor desde el primer hasta el ultimo dia                                                             
-                    totalPrice += actor.CostPerDay;                          // que aparece en el calendario  y se lo suma al coste total del calendario 
+                Pmx.countA += 1; Pmx.countL += 1;
+
+                for (int i = firstParticipation; i <= lastParticipation; i++)// suma el precio del actor desde el primer hasta el ultimo dia  
+                {                                                           
+                    totalPrice += actor.CostPerDay;
+                    Pmx.countA += 2; Pmx.countL += 2; Pmx.countC += 2;
+
+                }
+                Pmx.countL += 1; Pmx.countC += 1;
+
+                Pmx.countL += 2; Pmx.countC += 3;
                 if (firstParticipation!=0 && lastParticipation==0) {
                     totalPrice += actor.CostPerDay;
+                    Pmx.countA += 1; Pmx.countL += 1;
                 }
-                //Console.WriteLine("\n");
-                //Console.WriteLine("Actor: "+ actor.ID+" First participation: day"+firstParticipation+"  last participation: day"+lastParticipation+"  CostPerDay: "+actor.CostPerDay);
                 firstParticipation = 0;
                 lastParticipation = 0;
+                Pmx.countA += 2; Pmx.countL += 2; 
             }
-            //Console.WriteLine("valor del calendario ....................................... "+totalPrice);
+            Pmx.countL += 2; Pmx.countA += 1; 
             return totalPrice;
         }
 
         public static void performPmxInAllScenarios() {
-            Console.WriteLine("-----------------------------------------------------------------------------------------");
-            Console.WriteLine("                            Algoritmo genetico PMX");
-            Console.WriteLine("-----------------------------------------------------------------------------------------");
+            Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("                                                                        Algoritmo genetico PMX");
+            Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             for (int i= 0;i < 4; i++) {
                 Pmx.performCrossingPMX(i);// posicion del escenario
                 int numberOfScenario = i + 1;      
                 List<Day> days = Pmx.chooseTheBestCalendar(i);// posición del escenario    
                 int costo1 = Data.calculatePriceOfCalendar(i, movie.Scenarios[i].Days);
                 int costo2 = Data.calculatePriceOfCalendar(i, days);
-                Console.WriteLine("                         Escenario numero " + numberOfScenario);
-                Console.WriteLine("calendario original el costo es de : " + costo1 + " calendario mutado el costo es de : " + costo2);
-            }
-            
+                Console.WriteLine("                                                                      Escenario numero " + numberOfScenario);
+                Console.WriteLine("                                                            Calendario original: " + costo1 + " Calendario mutado: " + costo2);
+                Console.WriteLine("                                                          \n" +
+                                  "                                                      Asignaciones: " + Pmx.countA+ "     Comparaciones: " + Pmx.countC+ "     Lineas ejecutadas: " + Pmx.countL+"\n");
+                Pmx.countA = 0; Pmx.countL = 0; Pmx.countC = 0;
+                /*Console.WriteLine("    CALENDARIO INICIAL");
+                Pmx.printDays(movie.Scenarios[i].Days);
+                Console.WriteLine("\n    CALENDARIO CRUZADO");
+                Pmx.printDays(days);*/
+            }           
         }
     }
 }

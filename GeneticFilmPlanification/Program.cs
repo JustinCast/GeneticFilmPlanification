@@ -13,23 +13,26 @@ namespace GeneticFilmPlanification
         static void Main(string[] args)
         {
 
+            List<int> numeros = new List<int>();
+
             Data.createScenariosOfMovie();
             Data.createScenario1(5, 40, 0);// location ,actors, posicion del escenario
             Data.createScenario2(6, 60, 1);// location ,actors, posicion del escenario
             Data.createScenario3(7, 100, 2);// location ,actors, posicion del escenario
             Data.createScenario4(8, 80, 3);// location ,actors, posicion del escenario
             Data.printScenarios();
+
             Data.createDays();
-            Data.assignScenesToDay(0);// posicion del escenario
-            Data.assignScenesToDay(1);
-            Data.assignScenesToDay(2);
-            Data.assignScenesToDay(3);
+            Data.assignScenesToDay();
             Data.assignLocationsToDay();
+            
+           
 
             Data.performPmxInAllScenarios();
             Pmx.clearLists();
             Pmx.performOxInAllScenarios();
-            //int coste=Data.calculatePriceOfCalendar(movie,0,movie.Scenarios[0].FilmingCalendars[0]);
+
+            
 
             Console.WriteLine("\n\n\n\n");
             Console.WriteLine("_____________________________________________ BRANCH AND BOUND ALGORITHM _____________________________________________\n");
