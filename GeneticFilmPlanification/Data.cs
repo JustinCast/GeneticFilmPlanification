@@ -666,19 +666,17 @@ namespace GeneticFilmPlanification
                                 Pmx.countA += 1; Pmx.countL += 2; Pmx.countC += 3;
                                 if (auxActor.ID.Equals(actor.ID) && firstParticipation==0) {
                                     firstParticipation = day.DayNumber;
-                                    Pmx.countA += 1; Pmx.countL += 2;
-                                    break;
+                                    Pmx.countA += 1; Pmx.countL += 2;    
                                 }
                                 Pmx.countC += 1; Pmx.countL += 1; 
                                 if (auxActor.ID.Equals(actor.ID))
                                 {
                                     lastParticipation = day.DayNumber;
-                                    Pmx.countA += 1; Pmx.countL += 2;
-                                    break;
+                                    Pmx.countA += 1; Pmx.countL += 2;  
                                 }
                             }
                             Pmx.countA += 1; Pmx.countL += 2;
-                            break;
+                            
                         }
                         Pmx.countA += 1; Pmx.countL += 1;
                     }
@@ -695,40 +693,30 @@ namespace GeneticFilmPlanification
                                 {
                                     firstParticipation = day.DayNumber;
                                     Pmx.countA += 1; Pmx.countL += 2;
-                                    break;
                                 }
                                 Pmx.countL += 1; Pmx.countC += 1;
                                 if (auxActor.ID.Equals(actor.ID))
                                 {
                                     lastParticipation = day.DayNumber;
-                                    Pmx.countA += 1; Pmx.countL += 2; 
-                                    break;
+                                    Pmx.countA += 1; Pmx.countL += 2;
                                 }
                             }
                             Pmx.countA += 1; Pmx.countL += 2;
-                            break;
+                          
                         }
                         Pmx.countA += 1; Pmx.countL += 1;
                     }
                 }
                 Pmx.countA += 1; Pmx.countL += 1;
-
-                for (int i = firstParticipation; i <= lastParticipation; i++)// suma el precio del actor desde el primer hasta el ultimo dia  
-                {                                                           
-                    totalPrice += actor.CostPerDay;
-                    Pmx.countA += 2; Pmx.countL += 2; Pmx.countC += 2;
-
-                }
-                Pmx.countL += 1; Pmx.countC += 1;
-
-                Pmx.countL += 2; Pmx.countC += 3;
+                totalPrice += ((lastParticipation - firstParticipation) + 1) * actor.CostPerDay;// se calcula cuanto se le debe de pagar al actor y se suma a la cantidad total
+                Pmx.countL += 2; Pmx.countC += 3; Pmx.countA += 1;
                 if (firstParticipation!=0 && lastParticipation==0) {
                     totalPrice += actor.CostPerDay;
                     Pmx.countA += 1; Pmx.countL += 1;
                 }
                 firstParticipation = 0;
                 lastParticipation = 0;
-                Pmx.countA += 2; Pmx.countL += 2; 
+                Pmx.countA += 2; Pmx.countL += 2;
             }
             Pmx.countL += 2; Pmx.countA += 1; 
             return totalPrice;
