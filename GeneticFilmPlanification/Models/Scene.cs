@@ -14,7 +14,7 @@ namespace GeneticFilmPlanification.Models
         public List<Actor> Actors = new List<Actor>(); 
         public Location Location { get; set; }
         public bool Schedule { get; set; } // true = dia, false = noche
-        public bool assigned = false;
+        public bool assigned=false;
         public bool marked = false;// se utiliza en el metodo PMX
         public String id;
     }
