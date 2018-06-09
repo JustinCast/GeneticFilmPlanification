@@ -12,6 +12,10 @@ namespace GeneticFilmPlanification
     class BranchAndBound
     {
         #region variables necesarias para el algoritmo B&B
+        // contadores de asignaciones y comparaciones
+        int countA = 0;
+        int countC = 0;
+
         // listas de cada escenario
         private List<Scene> Scenario1Scenes = new List<Scene>();
         private List<Scene> Scenario2Scenes = new List<Scene>();
@@ -24,10 +28,8 @@ namespace GeneticFilmPlanification
         public List<Day> Scenario4Days = new List<Day>();
 
         // BSSF
-        public List<Scene> BSSF1 = new List<Scene>();
-        public List<Scene> BSSF2 = new List<Scene>();
-        public List<Scene> BSSF3 = new List<Scene>();
-        public List<Scene> BSSF4 = new List<Scene>();
+        public List<int> BSSF = new List<int>();
+        int cont = 0;
 
         private int InitialCost1, InitialCost2, InitialCost3, InitialCost4;
         private int FinalCost1, FinalCost2, FinalCost3, FinalCost4;
@@ -44,7 +46,7 @@ namespace GeneticFilmPlanification
         {
             // seteo por defecto de las mejores soluciones para cada escenario
             this.Scenario1Days = scenarios[0].Days;
-            InitialCost1 = Data.calculatePriceOfCalendar(0, Scenario1Days);
+            InitialCost1 = Data.calculatePriceOfCalendar(1, Scenario2Days);
 
             this.Scenario2Days = scenarios[1].Days;
             InitialCost2 = Data.calculatePriceOfCalendar(1, Scenario2Days);
@@ -69,67 +71,74 @@ namespace GeneticFilmPlanification
         public void RunBB()
         {
             // Escenario 1
+            cont = 0;
             this.Combination = this.ShallowClone(Scenario1Scenes);
             SetActorParticipation(Movie.GetInstance().Scenarios[0].Actors, Scenario1Scenes);
-            MakeCombination(Scenario1Scenes, Scenario1Days, BSSF1);
+            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 1 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n");
+            MakeCombination(Scenario1Scenes, Scenario1Days, InitialCost1);
+            FinalCost1 = BSSF.Min();
+            BSSF.Clear();
             // Escenario 2
+            cont = 0;
             FirstTime = true;
             this.Combination = this.ShallowClone(Scenario2Scenes);
+            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 2 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n");
             SetActorParticipation(Movie.GetInstance().Scenarios[1].Actors, Scenario2Scenes);
-            MakeCombination(Scenario2Scenes, Scenario2Days, BSSF2);
+            MakeCombination(Scenario2Scenes, Scenario2Days, InitialCost2);
+            FinalCost2 = BSSF.Min();
+            BSSF.Clear();
             // Escenario 3
+            cont = 0;
             FirstTime = true;
             this.Combination = this.ShallowClone(Scenario3Scenes);
             SetActorParticipation(Movie.GetInstance().Scenarios[2].Actors, Scenario3Scenes);
-            MakeCombination(Scenario3Scenes, Scenario3Days, BSSF3);
+            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 3 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n");
+            MakeCombination(Scenario3Scenes, Scenario3Days, InitialCost3);
+            FinalCost3 = BSSF.Min();
+            BSSF.Clear();
             // Escenario 4
+            cont = 0;
             FirstTime = true;
             this.Combination = this.ShallowClone(Scenario4Scenes);
-            SetActorParticipation(Movie.GetInstance().Scenarios[3].Actors, Scenario4Scenes);
-            MakeCombination(Scenario4Scenes, Scenario4Days, BSSF4);
-            //this.CurrentFilmingCalendarID = this.FilmingCalendars.ElementAt(i).AssignedScenario;
+            //SetActorParticipation(Movie.GetInstance().Scenarios[3].Actors, Scenario4Scenes);
+            Console.WriteLine("|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°| ESCENARIO 4 |°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|°|\n\n");
+            MakeCombination(Scenario4Scenes, Scenario4Days, InitialCost4);
+            FinalCost4 = BSSF.Min();
+            BSSF.Clear();
+
+            PrintCostComparison();
         }
         #endregion
 
         #region ramificación de B&B
-        private void MakeCombination(List<Scene> scenes, List<Day> days, List<Scene> BSSF)
-        {   if (!FirstTime)
+        private void MakeCombination(List<Scene> scenes, List<Day> days, int initialCost)
+        {           
+            if (scenes.Count() == 0)
             {
-                if (EvaluateCombination(scenes, days))
+                if (EvaluateCombination(Combination, days))
                 {
-                    if (CombinationCost(scenes) < CombinationCost(BSSF))
+                    if (CombinationCost(Combination) < initialCost && CombinationCost(Combination) > 0)
                     {
-                        MakeNewBSSF(scenes, BSSF);
+                        //Console.WriteLine(CombinationCost(Combination));
+                        BSSF.Add(CombinationCost(Combination));                        
                         return;
                     }
-                    // si es mayor o igual se poda
                     return;
                 }
-                // si la combinación no es válida, se poda
                 return;
             }
             foreach(Scene s in scenes)
             {
+                if (!FirstTime)
+                    if (CombinationCost(Combination) > initialCost || cont == 2000)
+                        return;
                 FirstTime = false;
-                if(s.Schedule)
-                {
-                    s.Schedule = false; // se llama nuevamente al método con la jornada de noche
-                    MakeCombination(scenes, days, BSSF);
-                }
-                else // se llama nuevamente al método con la jornada de noche
-                {
-                    s.Schedule = true; // se llama nuevamente al método con la jornada de día
-                    MakeCombination(scenes, days, BSSF);
-                }
-                /*
-                 * El siguiente fragmento cambia el # día y jornada de una escena y llama nuevamente al método
-                 * Va cambiando el número de día desde el 1 hasta tamaño - 1
-                 * **/
-                for(int i = 1; i < days[days.Count - 1].DayNumber; i++)
-                {
-                    s.DayNumber = i;
-                    MakeCombination(scenes, days, BSSF);
-                }
+                this.Combination.Remove(s); this.Combination.Add(s);
+                List<Scene> aux = ShallowClone(scenes);
+                aux.Remove(s);
+                SetActorParticipation(s.Actors, Combination);
+                cont++;
+                MakeCombination(aux, days, initialCost);
             }
         }
         #endregion
@@ -150,8 +159,13 @@ namespace GeneticFilmPlanification
             List<Actor> AlreadyCalculated = new List<Actor>();
             foreach (Scene s in scenes)
                 foreach (Actor a in s.Actors)
-                    total += ((a.LastParticipation - a.FirstParticipation) + 1) * a.CostPerDay;
-            Console.WriteLine("TOTAL: " + total);
+                {
+                    if (!AlreadyCalculated.Contains(a))
+                    {
+                        total += ((a.LastParticipation - a.FirstParticipation) + 1) * a.CostPerDay;
+                        AlreadyCalculated.Add(a);
+                    }
+                }
             return total;
         }
 
@@ -174,15 +188,6 @@ namespace GeneticFilmPlanification
                     }
         }
 
-        /// <summary>
-        /// Calcula el costo total del calendario para el Algoritmo B&B
-        /// </summary>
-        /// <returns>Costo total del calendario</returns>
-        private int CalendarCost(int pos, List<Day> days)
-        {
-            return Data.calculatePriceOfCalendar(pos, days);
-        }
-
         private bool EvaluateCombination(List<Scene> scenes, List<Day> days)
         {
             foreach (Day d in days)
@@ -197,13 +202,24 @@ namespace GeneticFilmPlanification
                             {
                                 return false;
                             }
-                        }                        
+                        }
+                    }
+                    else if (d.NightTime.IfSceneIsAllowed(s) && !d.NightTime.IfLocationIsUsed(s.Location))
+                    {
+                        foreach (Actor a in s.Actors)
+                        {
+                            if (CheckActorOverloadInDifferentDays(a, days) || CheckActorOverloadInSameDay(a, days))
+                            {
+                                return false;
+                            }
+                        }
                     }
                     else
+                    {
                         return false;
+                    }
                 }
             }
-            Console.WriteLine("PASÓ LA PRUEBA");
             return true;
         }
 
@@ -214,16 +230,16 @@ namespace GeneticFilmPlanification
         {
             Console.WriteLine("________________________________________");
             Console.WriteLine("Costo INICIAL Calendario 1: " + InitialCost1);
-            Console.WriteLine("Costo FINAL Calendario 1: " + CombinationCost(BSSF1));
+            Console.WriteLine("Costo FINAL Calendario 1: " + FinalCost1);
             Console.WriteLine("________________________________________");
             Console.WriteLine("Costo INICIAL Calendario 2: " + InitialCost2);
-            Console.WriteLine("Costo FINAL Calendario 2: " + CombinationCost(BSSF2));
+            Console.WriteLine("Costo FINAL Calendario 2: " + FinalCost2);
             Console.WriteLine("________________________________________");
             Console.WriteLine("Costo INICIAL Calendario 3: " + InitialCost3);
-            Console.WriteLine("Costo FINAL Calendario 3: " + CombinationCost(BSSF3));
+            Console.WriteLine("Costo FINAL Calendario 3: " + FinalCost3);
             Console.WriteLine("________________________________________");
             Console.WriteLine("Costo INICIAL Calendario 4: " + InitialCost4);
-            Console.WriteLine("Costo FINAL Calendario 4: " + CombinationCost(BSSF4));
+            Console.WriteLine("Costo FINAL Calendario 4: " + FinalCost4);
             Console.WriteLine("________________________________________");
         }
 
@@ -239,10 +255,50 @@ namespace GeneticFilmPlanification
         #endregion
 
         #region región de código para método auxiliares
+        private void PrintScenes(List<Day> days)
+        { 
+            foreach(Day d in days)
+            {
+                Console.WriteLine("Jornada día");
+                foreach (Scene s in d.DayTime.Scenes)
+                    Console.WriteLine(s.Location.ID);
+                Console.WriteLine("Jornada noche");
+                foreach (Scene s in d.NightTime.Scenes)
+                    Console.WriteLine(s.Location.ID);
+            }
+        }
+
         // Return a shallow clone of a list.
         private List<T> ShallowClone<T>(List<T> items)
         {
             return new List<T>(items);
+        }
+
+        private List<Day> TempPopulate(List<Scene> scenes, List<Day> days)
+        {
+            List<Day> temp = ShallowClone(days);
+            for(int i = 1; i < temp.Count(); i++)
+                foreach(Scene s in scenes)
+                    if (s.DayNumber == i) {
+                        if (s.Schedule)
+                        {
+                            if (!temp.ElementAt(i).DayTime.Scenes.Contains(s))
+                            {
+                                temp.ElementAt(i).DayTime.Scenes.Add(s);
+                                temp.ElementAt(i).DayTime.MaximunScriptPages += s.Duration;
+                            }
+                        }
+                        else
+                        {
+                            if (!temp.ElementAt(i).NightTime.Scenes.Contains(s))
+                            {
+                                temp.ElementAt(i).NightTime.Scenes.Add(s);
+                            }
+                        }
+                    }
+            /*Console.WriteLine("Lista despúes de agregación");
+            PrintScenes(temp);*/
+            return temp;
         }
 
         private void AssignDayAtrribute(List<Day> days, List<Scene> scenes)
@@ -297,7 +353,11 @@ namespace GeneticFilmPlanification
                             IfParticipateInTime(days[i].DayTime, a)
                             &&
                             IfParticipateInTime(days[j].NightTime, a))
+                        {
+                            Console.WriteLine("Sobrecarga en el día " + days[i].DayNumber);
+                            Console.WriteLine("ID actor: " + a.ID);
                             return true;
+                        }
                     }
                 }
             }
@@ -318,7 +378,11 @@ namespace GeneticFilmPlanification
                     IfParticipateInTime(days[i].DayTime, a)
                     &&
                     IfParticipateInTime(days[i].NightTime, a))
+                {
+                    Console.WriteLine("Sobrecarga en el día " + days[i].DayNumber);
+                    Console.WriteLine("ID actor: " + a.ID);
                     return true;
+                }
             }
             return false;
         }

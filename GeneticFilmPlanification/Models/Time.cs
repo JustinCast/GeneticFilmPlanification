@@ -32,12 +32,12 @@ namespace GeneticFilmPlanification.Models
 
         public bool IfLocationIsUsed(Location l)
         {
-            bool state = false;
-            Scenes.ForEach(s => {
-                if (s.Location == l)
-                    state = true;
-            });
-            return state;
+            foreach (Scene s in Scenes)
+                if (s.Location.Equals(l))
+                {
+                    return true;
+                }
+            return false;
         }
 
         public void UseLocation(Location l)
