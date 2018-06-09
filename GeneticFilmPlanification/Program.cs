@@ -13,6 +13,8 @@ namespace GeneticFilmPlanification
         static void Main(string[] args)
         {
 
+            List<int> numeros = new List<int>();
+
             Data.createScenariosOfMovie();
             Data.createScenario1(5, 40, 0);// location ,actors, posicion del escenario
             Data.createScenario2(6, 60, 1);// location ,actors, posicion del escenario
