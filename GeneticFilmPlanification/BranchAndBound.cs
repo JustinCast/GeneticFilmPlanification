@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace GeneticFilmPlanification
         // contadores de asignaciones y comparaciones
         static int countA = 0;
         static int countC = 0;
+        static int memorySize = 0;
 
         // listas de cada escenario
         private List<Scene> Scenario1Scenes = new List<Scene>();
@@ -61,7 +63,7 @@ namespace GeneticFilmPlanification
             AssignDayAtrribute(Scenario1Days, Scenario1Scenes);
             AssignDayAtrribute(Scenario2Days, Scenario2Scenes);
             AssignDayAtrribute(Scenario3Days, Scenario3Scenes);
-            AssignDayAtrribute(Scenario4Days, Scenario4Scenes);
+            AssignDayAtrribute(Scenario4Days, Scenario4Scenes);           
         }
 
         /// <summary>
@@ -78,10 +80,12 @@ namespace GeneticFilmPlanification
             MakeCombination(Scenario1Scenes, Scenario1Days, InitialCost1);
             FinalCost1 = BSSF.Min(); countA++;
             BSSF.Clear();
+            memorySize += Movie.GetInstance().Scenarios[0].MemoryCostForBB();
             BranchAndBound.ScenariosResults();
             countA = 0; countC = 0; cont = 0;
 
             // Escenario 2
+            memorySize = 0;
             cont = 0; countA++;
             FirstTime = true; countA++;
             this.Combination = this.ShallowClone(Scenario2Scenes); countA++;
@@ -90,10 +94,12 @@ namespace GeneticFilmPlanification
             MakeCombination(Scenario2Scenes, Scenario2Days, InitialCost2);
             FinalCost2 = BSSF.Min(); countA++;
             BSSF.Clear(); countA++;
+            memorySize += Movie.GetInstance().Scenarios[1].MemoryCostForBB();
             BranchAndBound.ScenariosResults();
             countA = 0; countC = 0; cont = 0;
 
             // Escenario 3
+            memorySize = 0;
             cont = 0; countA++;
             FirstTime = true; countA++;
             this.Combination = this.ShallowClone(Scenario3Scenes); countA++;
@@ -102,10 +108,12 @@ namespace GeneticFilmPlanification
             MakeCombination(Scenario3Scenes, Scenario3Days, InitialCost3);
             FinalCost3 = BSSF.Min(); countA++;
             BSSF.Clear();
+            memorySize += Movie.GetInstance().Scenarios[2].MemoryCostForBB();
             BranchAndBound.ScenariosResults();
             countA = 0; countC = 0; cont = 0;
 
             // Escenario 4
+            memorySize = 0;
             cont = 0; countA++;
             FirstTime = true; countA++;
             this.Combination = this.ShallowClone(Scenario4Scenes); countA++;
@@ -114,6 +122,7 @@ namespace GeneticFilmPlanification
             MakeCombination(Scenario4Scenes, Scenario4Days, InitialCost4);
             FinalCost4 = BSSF.Min(); countA++;
             BSSF.Clear(); countA++;
+            memorySize += Movie.GetInstance().Scenarios[3].MemoryCostForBB();
             BranchAndBound.ScenariosResults();
             countA = 0; countC = 0; cont = 0;
 
@@ -276,6 +285,7 @@ namespace GeneticFilmPlanification
         {
             Console.WriteLine("Cantidad de asignaciones: " + countA);
             Console.WriteLine("Cantidad de comparaciones: " + countC);
+            Console.WriteLine("Cantidad de bytes utilizados: " + memorySize);
             Console.WriteLine("Cantidad de llamadas recursivas: " + cont);
         }
 

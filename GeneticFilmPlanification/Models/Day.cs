@@ -11,5 +11,10 @@ namespace GeneticFilmPlanification.Models
         public Time DayTime { get; set; }
         public Time NightTime { get; set; }
         public int DayNumber { get; set; }
+
+        public int GetDayMemoryCost()
+        {
+            return DayTime.GetMemoryCost() + NightTime.GetMemoryCost() + 4;
+        }
     }
 }
