@@ -29,34 +29,6 @@ namespace GeneticFilmPlanification
             return newCalendar;
         }
 
-        public static Scene sceneToChange(FilmingCalendar fatherCalendar, FilmingCalendar sonCalendar)
-        {
-            int count = 0;
-            countA += 1; countL += 2;
-            foreach (Scene scene in fatherCalendar.Scenes)
-            {
-                countL += 1; countA += 1;
-                foreach (Scene auxScene in sonCalendar.Scenes)
-                {
-                    countL += 2; countA += 1; countC += 1;
-                    if (!scene.id.Equals(auxScene.id))
-                    {
-                        count++; countA += 1; countL += 2;
-                        continue;
-                    }
-                }
-                countL += 2; countA += 1; countC += 1;
-                if (count == sonCalendar.Scenes.Count)
-                {
-                    countL += 1;
-                    return scene;
-                }
-                count = 0; countA += 1; countL += 1;
-            }
-            countL += 2; countA += 1;
-            return null;
-        }
-
         public static FilmingCalendar makeMutation(FilmingCalendar calendar)
         {
             FilmingCalendar currenCalendar = calendar;
