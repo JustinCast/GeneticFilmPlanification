@@ -143,7 +143,7 @@ namespace GeneticFilmPlanification
                     if (CombinationCost(Combination) < initialCost && CombinationCost(Combination) > 0)
                     {
                         //PrintCombination(Combination);
-                        BSSF.Add(CombinationCost(Combination)); countA++;
+                        BSSF.Add(CombinationCost(Combination)); countA++; memorySize += 4;
                         return;
                     }
                     return;
@@ -157,9 +157,9 @@ namespace GeneticFilmPlanification
                 if (!FirstTime)
                     if (CombinationCost(Combination) > initialCost || cont == 5000)
                         return;
-                FirstTime = false; countA++;
+                FirstTime = false; countA++; memorySize++;
                 this.Combination.Remove(s); this.Combination.Add(s); countA+=2;
-                List<Scene> aux = ShallowClone(scenes); countA++; 
+                List<Scene> aux = ShallowClone(scenes); countA++;  memorySize += s.SceneMemoryCost() * aux.Count();
                 aux.Remove(s);
                 SetActorParticipation(s.Actors, Combination);
                 cont++;
@@ -171,19 +171,21 @@ namespace GeneticFilmPlanification
         #region región de código para poda o evaluación del algoritmo
         private int CombinationCost(List<Scene> scenes)
         {
-            int total = 0; countA++;
+            int total = 0; countA++; memorySize += 4;
             List<Actor> AlreadyCalculated = new List<Actor>(); countA++;
             countA++;
+            memorySize += scenes[0].SceneMemoryCost();
             foreach (Scene s in scenes)
             {
                 countA++;
+                memorySize += s.Actors[0].ActorMemoryCost();
                 foreach (Actor a in s.Actors)
                 {
                     countC++;
                     if (!AlreadyCalculated.Contains(a))
                     {
-                        total += ((a.LastParticipation - a.FirstParticipation) + 1) * a.CostPerDay; countA++;
-                        AlreadyCalculated.Add(a);
+                        total += ((a.LastParticipation - a.FirstParticipation) + 1) * a.CostPerDay; countA++; memorySize += 4;
+                        AlreadyCalculated.Add(a); memorySize += a.ActorMemoryCost();
                     }
                 }
             }
@@ -193,24 +195,27 @@ namespace GeneticFilmPlanification
         private void SetActorParticipation(List<Actor> actors, List<Scene> scenes)
         {
             countA++;
+            memorySize += actors[0].ActorMemoryCost();
             foreach (Actor a in actors)
             {
                 countA++;
+                memorySize += scenes[0].SceneMemoryCost();
                 foreach (Scene s in scenes)
                 {
                     countA++;
+                    memorySize += actors[0].ActorMemoryCost();
                     foreach (Actor ac in s.Actors)
                     {
                         countC += 2; countA+=2;
                         if (ac.Equals(a) && a.FirstParticipation == 0)
                         {
-                            ac.FirstParticipation = s.DayNumber;
+                            ac.FirstParticipation = s.DayNumber; memorySize += 4;
                             break;
                         }
                         countC++;
                         if (ac.Equals(a))
                         {
-                            ac.LastParticipation = s.DayNumber;
+                            ac.LastParticipation = s.DayNumber; memorySize += 4;
                             break;
                         }
                     }
@@ -221,15 +226,18 @@ namespace GeneticFilmPlanification
         private bool EvaluateCombination(List<Scene> scenes, List<Day> days)
         {
             countA++;
+            memorySize += days[0].GetDayMemoryCost();
             foreach (Day d in days)
             {
                 countA++;
+                memorySize += scenes[0].SceneMemoryCost();
                 foreach (Scene s in scenes)
                 {
                     countC+=2;
                     if (d.DayTime.IfSceneIsAllowed(s) && !d.DayTime.IfLocationIsUsed(s.Location))
                     {
                         countA++;
+                        memorySize += s.Actors[0].ActorMemoryCost();
                         foreach (Actor a in s.Actors)
                         {
                             countC += 2;
@@ -243,6 +251,7 @@ namespace GeneticFilmPlanification
                     {
                         countC += 2;
                         countA++;
+                        memorySize += s.Actors[0].ActorMemoryCost();
                         foreach (Actor a in s.Actors)
                         {
                             countC += 2;
@@ -296,7 +305,7 @@ namespace GeneticFilmPlanification
             countA++;
             foreach (Scene s in scenes)
             {
-                c += s.id + "-"; countA++;
+                c += s.id + "-"; countA++; memorySize += s.id.Length + 1;
             }
             Console.WriteLine(c);
         }
@@ -314,19 +323,20 @@ namespace GeneticFilmPlanification
         private void AssignDayAtrribute(List<Day> days, List<Scene> scenes)
         {
             countA++;
+            memorySize += days[0].GetDayMemoryCost();
             foreach (Day d in days)
             {
                 countA++;
                 foreach (Scene s in d.DayTime.Scenes)
                 {
-                    s.DayNumber = d.DayNumber; countA++;
-                    scenes.Add(s); countA++;
+                    s.DayNumber = d.DayNumber; countA++; memorySize += 4;
+                    scenes.Add(s); countA++; memorySize += s.SceneMemoryCost();
                 }
                 countA++;
                 foreach (Scene s in d.NightTime.Scenes)
                 {
-                    s.DayNumber = d.DayNumber; countA++;
-                    scenes.Add(s); countA++;
+                    s.DayNumber = d.DayNumber; countA++; memorySize += 4;
+                    scenes.Add(s); countA++; memorySize += s.SceneMemoryCost();
                 }
             }
         }
@@ -353,14 +363,21 @@ namespace GeneticFilmPlanification
         {
             countA++; //primera asignación del for
             countC++; // ultima comparación falsa del for
+            memorySize += 4;
             for (int i = 0; i < days.Count(); i++)
             {
+                // i increment
+                memorySize += 4;
                 countC++; // comparación del 'i' en cada iteración
                 countA++; // aumento del 'i' en cada iteración
                 countA++; //asignación del 'j' en cada iteración
                 countC++; // comparación falsa de 'j'
+                // j assignment
+                memorySize += 4;
                 for (int j = (i + 1); j < days.Count(); j++)
                 {
+                    // j increment
+                    memorySize += 4;
                     // verifica si hay 1 día de diferencia para verificar la sobrecarga
                     countC++;
                     if (
@@ -392,8 +409,12 @@ namespace GeneticFilmPlanification
         {
             countA++; // primera asignación 'i'
             countC++; // comparación falsa
+            // i assignment
+            memorySize += 4;
             for(int i = 0; i < days.Count(); i++)
             {
+                // i increment
+                memorySize += 4;
                 countC++; //comparación del 'i' en cada iteración
                 countC+=2;
                 if (
