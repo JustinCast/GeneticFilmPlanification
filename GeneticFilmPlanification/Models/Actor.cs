@@ -12,5 +12,19 @@ namespace GeneticFilmPlanification.Models
         public int FirstParticipation = 0;
         public int LastParticipation = 0;
         public String ID { get; set; }
+
+        public int ActorMemoryCost()
+        {
+            int cost = 0;
+            // CostPerDay
+            cost += 4;
+            // FirstParticipation
+            cost += 4;
+            // LastParticipation
+            cost += 4;
+            // ID 
+            cost += ID.Length;
+            return cost;
+        }
     }
 }

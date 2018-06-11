@@ -16,6 +16,34 @@ namespace GeneticFilmPlanification.Models
 
         public List<List<Day>> possibleDays = new List<List<Day>>();// PMX = se ingresaran listas con los posibles dias en diferentes ordenes en el que se realizaran las escenas
 
-        /*public Day GetDay()*/
+        public int MemoryCostForBB()
+        {
+            int cost = 0;
+            foreach (Actor a in Actors)
+            {
+                // costPerDay
+                cost += 4;
+                // FirstParticipation
+                cost += 4;
+                // LastParticipation
+                cost += 4;
+                // ID
+                cost += a.ID.Length;
+            }
+
+            foreach (Location l in Locations)
+            {
+                // ID
+                cost += l.ID.Length;
+                // InUse
+                cost += 1;
+            }
+            foreach (Day d in Days)
+                cost += d.GetDayMemoryCost();
+
+            // StageNumber
+            cost += 4;
+            return cost;
+        }
     }
 }
